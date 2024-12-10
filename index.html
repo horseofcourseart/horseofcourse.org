@@ -113,16 +113,16 @@
             <!-- Coat Color -->
             <label for="coat-color">Coat Color:</label>
             <select id="coat-color" name="coat-color" required>
-                <option value="Bay">Bay</option>
-                <option value="Chestnut">Chestnut</option>
-                <option value="Seal">Seal</option>
-                <option value="Black">Black</option>
-                <option value="Grey">Grey</option>
-                <option value="White">White</option>
-                <option value="Palomino">Palomino</option>
-                <option value="Buckskin">Buckskin</option>
-                <option value="Cream">Cream</option>
-                <option value="Dun">Dun</option>
+                <option value="Bay" data-price="0">Bay</option>
+                <option value="Chestnut" data-price="0">Chestnut</option>
+                <option value="Seal" data-price="0">Seal</option>
+                <option value="Black" data-price="0">Black</option>
+                <option value="Grey" data-price="0">Grey</option>
+                <option value="White" data-price="0">White</option>
+                <option value="Palomino" data-price="0">Palomino</option>
+                <option value="Buckskin" data-price="0">Buckskin</option>
+                <option value="Cream" data-price="0">Cream</option>
+                <option value="Dun" data-price="0">Dun</option>
             </select>
     
             <!-- Coat Markings -->
@@ -171,10 +171,7 @@
     
             <!-- Total Price -->
             <h3>Total Price: <span id="total-price">$0.00</span></h3>
-            <h3>Price due: <span id="payment-due">$0.00</span></h3>
-    
-            <!-- PayPal Button -->
-            <div id="paypal-button-container"></div>
+            <h3>Payment Due: <span id="payment-due">$0.00</span></h3>
         </form>
 
         <!-- PayPal Button -->
@@ -227,10 +224,15 @@
 
                 // Calculate payment due (halved total price)
                 paymentDue = totalPrice / 2;
+
+                if (isNaN(totalPrice) || isNaN(paymentDue)) {
+                    alert('Total price or payment due is invalid');
+                    return;
+                }
     
                 // Update the total price display
                 totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`;
-                paymentDueElement.textContent = `Payment Due: $${paymentDue.toFixed(2)}`;
+                paymentDueElement.textContent = `$${paymentDue.toFixed(2)}`;
             }
     
                 // Function to render the PayPal button
