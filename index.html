@@ -180,7 +180,7 @@
             <h3>Total Price: $<span id="total-price">50</span></h3>
 
             <!-- Submit -->
-            <button type="submit">Submit Order</button>
+            <button type="submit-button">Submit Order</button>
         </form>
 
         <!-- PayPal Button -->
@@ -191,6 +191,7 @@
 
     <!-- JavaScript -->
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
         const scaleSelect = document.getElementById("scale");
         const coatMarkingsSelect = document.getElementById("coat-markings");
         const buildSelect = document.getElementById("build");
@@ -198,33 +199,33 @@
         const accessoriesSelect = document.getElementById("accessories");
         const totalPriceElement = document.getElementById("total-price");
         const submitButton = document.getElementById("submit-button"); // Assuming you have a submit button
-    
+
         let totalPrice = 0;
-    
+
         // Function to update the total price dynamically
         function updateTotalPrice() {
             totalPrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
-    
+
             // Add cost of coat markings
             Array.from(coatMarkingsSelect.selectedOptions).forEach(option => {
                 totalPrice += parseInt(option.dataset.price) || 0;
             });
-    
+
             // Add cost of build
             totalPrice += parseInt(buildSelect.options[buildSelect.selectedIndex].dataset.price) || 0;
-    
+
             // Add cost of pose
             totalPrice += parseInt(poseSelect.options[poseSelect.selectedIndex].dataset.price) || 0;
-    
+
             // Add cost of accessories
             Array.from(accessoriesSelect.selectedOptions).forEach(option => {
                 totalPrice += parseInt(option.dataset.price) || 0;
             });
-    
+
             // Update total price display
             totalPriceElement.textContent = totalPrice;
         }
-    
+
         // Function to render the PayPal button
         function renderPayPalButton() {
             // Remove existing PayPal button if it exists
@@ -232,7 +233,7 @@
             if (existingButton) {
                 existingButton.innerHTML = ''; // Remove the current button
             }
-    
+
             // Create the new PayPal button
             paypal.Buttons({
                 createOrder: function(data, actions) {
@@ -252,19 +253,19 @@
                 }
             }).render('#paypal-button-container'); // Render the new button in the container
         }
-    
+
         // Event listener for the submit button
         submitButton.addEventListener('click', function() {
             // Update the total price
             updateTotalPrice();
-    
+
             // Now render the PayPal button when submit is clicked
             renderPayPalButton();
         });
-    
+
         // Call initially to set the starting price
         updateTotalPrice();
-    
+    });
     </script>
 </body>
 </html>
