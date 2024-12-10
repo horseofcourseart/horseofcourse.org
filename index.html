@@ -255,11 +255,11 @@
                             const formData = {
                                 email: form.email.value,
                                 phone: form.phone.value,
-                                scale: form.scale.value,
+                                scale: form['model-type'].value,
                                 coatColor: form['coat-color'].value,
                                 coatMarkings: Array.from(form['coat-markings'].selectedOptions).map(option => option.value),
-                                build: form.build.value,
-                                pose: form.pose.value,
+                                build: form['build'].value,
+                                pose: form['pose'].value,
                                 accessories: Array.from(form['accessories'].selectedOptions).map(option => option.value),
                                 transactionId: details.id,
                                 totalPrice: totalPrice.toFixed(2), // Full price
