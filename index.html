@@ -197,31 +197,12 @@
         const poseSelect = document.getElementById("pose");
         const accessoriesSelect = document.getElementById("accessories");
         const totalPriceElement = document.getElementById("total-price");
+        const submitButton = document.getElementById("submit-button"); // Assuming you have a submit button
     
         let totalPrice = 0;
     
-        // Create PayPal button only once
-        paypal.Buttons({
-            createOrder: function(data, actions) {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: totalPrice // Use dynamic price here
-                        }
-                    }]
-                });
-            },
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-                    alert('Transaction completed by ' + details.payer.name.given_name);
-                    // Optionally, redirect user after successful payment
-                });
-            }
-        }).render('#paypal-button-container');
-    
-        // Update total price function
+        // Function to update the total price dynamically
         function updateTotalPrice() {
-            // Recalculate the total price
             totalPrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
     
             // Add cost of coat markings
@@ -242,30 +223,48 @@
     
             // Update total price display
             totalPriceElement.textContent = totalPrice;
+        }
     
-            // Update the PayPal order dynamically (update total price)
+        // Function to render the PayPal button
+        function renderPayPalButton() {
+            // Remove existing PayPal button if it exists
+            const existingButton = document.getElementById('paypal-button-container');
+            if (existingButton) {
+                existingButton.innerHTML = ''; // Remove the current button
+            }
+    
+            // Create the new PayPal button
             paypal.Buttons({
                 createOrder: function(data, actions) {
                     return actions.order.create({
                         purchase_units: [{
                             amount: {
-                                value: totalPrice // Use live price dynamically here
+                                value: totalPrice.toString() // Use dynamic price here
                             }
                         }]
                     });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        alert('Transaction completed by ' + details.payer.name.given_name);
+                        // Optionally, redirect user after successful payment
+                    });
                 }
-            }).render('#paypal-button-container');
+            }).render('#paypal-button-container'); // Render the new button in the container
         }
     
-        // Event listeners to update the price when selections change
-        scaleSelect.addEventListener("change", updateTotalPrice);
-        coatMarkingsSelect.addEventListener("change", updateTotalPrice);
-        buildSelect.addEventListener("change", updateTotalPrice);
-        poseSelect.addEventListener("change", updateTotalPrice);
-        accessoriesSelect.addEventListener("change", updateTotalPrice);
+        // Event listener for the submit button
+        submitButton.addEventListener('click', function() {
+            // Update the total price
+            updateTotalPrice();
+    
+            // Now render the PayPal button when submit is clicked
+            renderPayPalButton();
+        });
     
         // Call initially to set the starting price
         updateTotalPrice();
+    
     </script>
 </body>
 </html>
