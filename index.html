@@ -100,25 +100,18 @@
 
     <div class="order-form">
         <h1>Custom Horse Model Order</h1>
-        <form action="https://formspree.io/f/myzyapwz" method="POST">
-            <!-- Email -->
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-
-            <!-- Phone -->
-            <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="phone" required>
-
-            <!-- Scale Selection -->
-            <label for="scale">Select Model Scale:</label>
-            <select id="scale" name="scale" required>
-                <option value="1:32" data-price="50">1:32nd Scale - $50</option>
-                <option value="1:12" data-price="150">1:12th Scale - $150</option>
-                <option value="1:9" data-price="300">1:9th Scale - $300</option>
+        <!-- Form -->
+        <form id="order-form">
+            <!-- Model Type -->
+            <label for="model-type">Model Type:</label>
+            <select id="model-type" name="model-type" required>
+                <option value="1:32" data-price="50">1:32 ($50)</option>
+                <option value="1:12" data-price="150">1:12 ($150)</option>
+                <option value="1:9" data-price="300">1:9 ($300)</option>
             </select>
-
-            <!-- Coat Color Selection -->
-            <label for="coat-color">Select Coat Color:</label>
+    
+            <!-- Coat Color -->
+            <label for="coat-color">Coat Color:</label>
             <select id="coat-color" name="coat-color" required>
                 <option value="Bay">Bay</option>
                 <option value="Chestnut">Chestnut</option>
@@ -131,56 +124,57 @@
                 <option value="Cream">Cream</option>
                 <option value="Dun">Dun</option>
             </select>
-
+    
             <!-- Coat Markings -->
-            <label for="coat-markings">Select Coat Markings:</label>
+            <label for="coat-markings">Coat Markings:</label>
             <select id="coat-markings" name="coat-markings" multiple>
                 <option value="Socks" data-price="0">Socks (Free)</option>
                 <option value="Face" data-price="0">Face (Free)</option>
-                <option value="Pinto" data-price="20">Pinto (+$20 / +$10 for 1:32nd)</option>
-                <option value="Robicano" data-price="20">Robicano (+$20 / +$10 for 1:32nd)</option>
-                <option value="Roan" data-price="20">Roan (+$20 / +$10 for 1:32nd)</option>
-                <option value="Blanket" data-price="20">Blanket (+$20 / +$10 for 1:32nd)</option>
-                <option value="Leopard" data-price="20">Leopard (+$20 / +$10 for 1:32nd)</option>
-                <option value="Snowflake" data-price="20">Snowflake (+$20 / +$10 for 1:32nd)</option>
-                <option value="Dapple" data-price="20">Dapple (+$20 / +$10 for 1:32nd)</option>
-                <option value="Smoky" data-price="20">Smoky (+$20 / +$10 for 1:32nd)</option>
+                <option value="Pinto" data-price="20">Pinto (+$20/+10 for 1:32)</option>
+                <option value="Robicano" data-price="20">Robicano (+$20/+10 for 1:32)</option>
+                <option value="Roan" data-price="20">Roan (+$20/+10 for 1:32)</option>
+                <option value="Blanket" data-price="20">Blanket (+$20/+10 for 1:32)</option>
+                <option value="Leopard" data-price="20">Leopard (+$20/+10 for 1:32)</option>
+                <option value="Snowflake" data-price="20">Snowflake (+$20/+10 for 1:32)</option>
+                <option value="Dapple" data-price="20">Dapple (+$20/+10 for 1:32)</option>
+                <option value="Smoky" data-price="20">Smoky (+$20/+10 for 1:32)</option>
             </select>
-
+    
             <!-- Build -->
-            <label for="build">Select Build:</label>
+            <label for="build">Build:</label>
             <select id="build" name="build" required>
                 <option value="Standard" data-price="0">Standard (Free)</option>
                 <option value="Pony" data-price="0">Pony (Free)</option>
                 <option value="Mini" data-price="0">Mini (Free)</option>
-                <option value="Draft" data-price="40">Draft (+$40 / +$20 for 1:32nd)</option>
-                <option value="Specific Breed" data-price="70">Specific Breed (+$70 / +$35 for 1:32nd)</option>
+                <option value="Draft" data-price="40">Draft (+$40/+20 for 1:32)</option>
+                <option value="Specific Breed" data-price="70">Specific Breed (+$70/+35 for 1:32)</option>
             </select>
-
+    
             <!-- Pose -->
-            <label for="pose">Select Pose:</label>
+            <label for="pose">Pose:</label>
             <select id="pose" name="pose" required>
                 <option value="Standing" data-price="0">Standing (Free)</option>
                 <option value="Walking" data-price="0">Walking (Free)</option>
-                <option value="Running" data-price="20">Running (+$20 / +$10 for 1:32nd)</option>
-                <option value="Special gait" data-price="40">Special gait (+$40 / +$20 for 1:32nd)</option>
-                <option value="Jumping" data-price="40">Jumping (+$40 / +$20 for 1:32nd)</option>
-                <option value="Rearing" data-price="40">Rearing (+$40 / +$20 for 1:32nd)</option>
-                <option value="Dynamic" data-price="70">Dynamic (+$70 / +$35 for 1:32nd)</option>
+                <option value="Running" data-price="20">Running (+$20/+10 for 1:32)</option>
+                <option value="Special Gait" data-price="40">Special Gait (+$40/+20 for 1:32)</option>
+                <option value="Jumping" data-price="40">Jumping (+$40/+20 for 1:32)</option>
+                <option value="Rearing" data-price="40">Rearing (+$40/+20 for 1:32)</option>
+                <option value="Dynamic" data-price="70">Dynamic (+$70/+35 for 1:32)</option>
             </select>
-
+    
             <!-- Accessories -->
-            <label for="accessories">Select Accessories:</label>
+            <label for="accessories">Accessories:</label>
             <select id="accessories" name="accessories" multiple>
-                <option value="Diorama" data-price="70">Diorama (+$70 / +$35 for 1:32nd)</option>
-                <option value="Tack" data-price="150">Tack (+$150 / +$75 for 1:32nd)</option>
+                <option value="Diorama" data-price="70">Diorama (+$70/+35 for 1:32)</option>
+                <option value="Tack" data-price="150">Tack (+$150/+75 for 1:32)</option>
             </select>
-
-            <!-- Total Price Display -->
-            <h3>Total Price: $<span id="total-price">50</span></h3>
-
-            <!-- Submit -->
-            <button type="submit-button">Submit Order</button>
+    
+            <!-- Total Price -->
+            <h3>Total Price: <span id="total-price">$0.00</span></h3>
+            <h3>Price due: <span id="payment-due">$0.00</span></h3>
+    
+            <!-- PayPal Button -->
+            <div id="paypal-button-container"></div>
         </form>
 
         <!-- PayPal Button -->
@@ -189,83 +183,131 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
+        <!-- JavaScript -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-        const scaleSelect = document.getElementById("scale");
-        const coatMarkingsSelect = document.getElementById("coat-markings");
-        const buildSelect = document.getElementById("build");
-        const poseSelect = document.getElementById("pose");
-        const accessoriesSelect = document.getElementById("accessories");
-        const totalPriceElement = document.getElementById("total-price");
-        const submitButton = document.getElementById("submit-button"); // Assuming you have a submit button
+        document.addEventListener("DOMContentLoaded", function () {
+            const scaleSelect = document.getElementById("scale");
+            const coatMarkingsSelect = document.getElementById("coat-markings");
+            const buildSelect = document.getElementById("build");
+            const poseSelect = document.getElementById("pose");
+            const accessoriesSelect = document.getElementById("accessories");
+            const totalPriceElement = document.getElementById("total-price");
+            const paymentDueElement = document.getElementById("payment-due");
+            const form = document.getElementById("order-form");
+    
+            let totalPrice = 0; // Full price
+            let paymentDue = 0; // Halved price for checkout
+    
+            // Function to update the total price dynamically
+            function updateTotalPrice() {
+                totalPrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
+    
+                // Check if the selected scale is 1:32 (half price for add-ons)
+                const isSmallScale = scaleSelect.value === "1:32";
+    
+                // Add the cost of coat markings
+                Array.from(coatMarkingsSelect.selectedOptions).forEach(option => {
+                    const addonPrice = parseInt(option.dataset.price) || 0;
+                    totalPrice += isSmallScale ? addonPrice / 2 : addonPrice;
+                });
+    
+                // Add the cost of build
+                const buildPrice = parseInt(buildSelect.options[buildSelect.selectedIndex].dataset.price) || 0;
+                totalPrice += isSmallScale ? buildPrice / 2 : buildPrice;
+    
+                // Add the cost of pose
+                const posePrice = parseInt(poseSelect.options[poseSelect.selectedIndex].dataset.price) || 0;
+                totalPrice += isSmallScale ? posePrice / 2 : posePrice;
+    
+                // Add the cost of accessories
+                Array.from(accessoriesSelect.selectedOptions).forEach(option => {
+                    const addonPrice = parseInt(option.dataset.price) || 0;
+                    totalPrice += isSmallScale ? addonPrice / 2 : addonPrice;
+                });
 
-        let totalPrice = 0;
-
-        // Function to update the total price dynamically
-        function updateTotalPrice() {
-            totalPrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
-
-            // Add cost of coat markings
-            Array.from(coatMarkingsSelect.selectedOptions).forEach(option => {
-                totalPrice += parseInt(option.dataset.price) || 0;
-            });
-
-            // Add cost of build
-            totalPrice += parseInt(buildSelect.options[buildSelect.selectedIndex].dataset.price) || 0;
-
-            // Add cost of pose
-            totalPrice += parseInt(poseSelect.options[poseSelect.selectedIndex].dataset.price) || 0;
-
-            // Add cost of accessories
-            Array.from(accessoriesSelect.selectedOptions).forEach(option => {
-                totalPrice += parseInt(option.dataset.price) || 0;
-            });
-
-            // Update total price display
-            totalPriceElement.textContent = totalPrice;
-        }
-
-        // Function to render the PayPal button
-        function renderPayPalButton() {
-            // Remove existing PayPal button if it exists
-            const existingButton = document.getElementById('paypal-button-container');
-            if (existingButton) {
-                existingButton.innerHTML = ''; // Remove the current button
+                // Calculate payment due (halved total price)
+                paymentDue = totalPrice / 2;
+    
+                // Update the total price display
+                totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`;
+                paymentDueElement.textContent = `Payment Due: $${paymentDue.toFixed(2)}`;
             }
-
-            // Create the new PayPal button
-            paypal.Buttons({
-                createOrder: function(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                value: totalPrice.toString() // Use dynamic price here
-                            }
-                        }]
-                    });
-                },
-                onApprove: function(data, actions) {
-                    return actions.order.capture().then(function(details) {
-                        alert('Transaction completed by ' + details.payer.name.given_name);
-                        // Optionally, redirect user after successful payment
-                    });
-                }
-            }).render('#paypal-button-container'); // Render the new button in the container
-        }
-
-        // Event listener for the submit button
-        submitButton.addEventListener('click', function() {
-            // Update the total price
-            updateTotalPrice();
-
-            // Now render the PayPal button when submit is clicked
+    
+                // Function to render the PayPal button
+                function renderPayPalButton() {
+                paypal.Buttons({
+                    createOrder: function (data, actions) {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: paymentDue.toFixed(2) // Send halved price to PayPal
+                                }
+                            }]
+                        });
+                    },
+                    onApprove: function (data, actions) {
+                        return actions.order.capture().then(function (details) {
+                            alert('Transaction completed by ' + details.payer.name.given_name);
+    
+                            // Prepare data for Formspree submission
+                            const formData = {
+                                email: form.email.value,
+                                phone: form.phone.value,
+                                scale: form.scale.value,
+                                coatColor: form['coat-color'].value,
+                                coatMarkings: Array.from(form['coat-markings'].selectedOptions).map(option => option.value),
+                                build: form.build.value,
+                                pose: form.pose.value,
+                                accessories: Array.from(form['accessories'].selectedOptions).map(option => option.value),
+                                transactionId: details.id,
+                                totalPrice: totalPrice.toFixed(2), // Full price
+                                paymentDue: paymentDue.toFixed(2), // Halved price
+                                payerName: details.payer.name.given_name,
+                                payerEmail: details.payer.email_address
+                            };
+    
+                            // Submit form data to Formspree via AJAX
+                            submitToFormspree(formData);
+                        });
+                    }
+                }).render('#paypal-button-container');
+            }
+    
+            // Function to submit form data to Formspree
+            function submitToFormspree(data) {
+                fetch("https://formspree.io/f/myzyapwz", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Order submitted successfully!");
+                    } else {
+                        alert("Failed to submit the order. Please try again.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error submitting to Formspree:", error);
+                    alert("An error occurred. Please try again.");
+                });
+            }
+    
+            // Event listeners for inputs to update total price
+            scaleSelect.addEventListener("change", updateTotalPrice);
+            coatMarkingsSelect.addEventListener("change", updateTotalPrice);
+            buildSelect.addEventListener("change", updateTotalPrice);
+            poseSelect.addEventListener("change", updateTotalPrice);
+            accessoriesSelect.addEventListener("change", updateTotalPrice);
+    
+            // Render the PayPal button when the page loads
             renderPayPalButton();
+    
+            // Update price when the form is loaded
+            updateTotalPrice();
         });
-
-        // Call initially to set the starting price
-        updateTotalPrice();
-    });
     </script>
 </body>
 </html>
