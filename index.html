@@ -31,7 +31,7 @@
             margin-top: 20px;
         }
 
-        .form-container select, .form-container input[type="text"] {
+        .form-container select, .form-container input[type="text"], .form-container input[type="email"], .form-container input[type="tel"] {
             width: 200px;
             padding: 10px;
             margin: 10px;
@@ -101,6 +101,14 @@
     <!-- Customization Form -->
     <div class="form-container">
         <form id="horse-customization-form" action="https://formspree.io/f/myzyapwz" method="POST">
+            <!-- Email -->
+            <h3>Email Address</h3>
+            <input type="email" name="email" required placeholder="Enter your email" />
+
+            <!-- Phone Number -->
+            <h3>Phone Number</h3>
+            <input type="tel" name="phone" required placeholder="Enter your phone number" />
+
             <!-- Model Type -->
             <h3>Choose Model Type</h3>
             <select id="scale" name="scale">
@@ -153,105 +161,80 @@
             <h3>Select Pose</h3>
             <select id="pose" name="pose">
                 <option value="Standing">Standing (Free)</option>
-                <option value="Walking">Walking (Free)</option>
-                <option value="Running">Running (+$20)</option>
-                <option value="Special gait">Special gait (+$40)</option>
-                <option value="Jumping">Jumping (+$40)</option>
-                <option value="Rearing">Rearing (+$40)</option>
-                <option value="Dynamic">Dynamic (+$70)</option>
+                <option value="Running">Running (+$30)</option>
+                <option value="Rearing">Rearing (+$30)</option>
             </select>
 
-            <!-- Accessories -->
-            <h3>Select Accessories</h3>
-            <select id="accessories" name="accessories" multiple>
-                <option value="Diorama">Diorama (+$70)</option>
-                <option value="Tack">Tack (+$150)</option>
-            </select>
+            <!-- Total Price Display -->
+            <h3>Total Price: $<span id="total-price">50</span></h3>
 
-            <!-- Comments -->
-            <h3>Comments</h3>
-            <input type="text" name="comments" placeholder="Enter any special requests or comments" />
-
-            <!-- PayPal Button -->
-            <div class="paypal-button-container" id="paypal-button-container"></div>
-
-            <!-- Submit Formspree -->
-            <input type="submit" value="Submit Form" />
+            <!-- Submit -->
+            <button type="submit">Submit Order</button>
         </form>
+
+        <!-- PayPal Button -->
+        <div class="paypal-button-container">
+            <div id="paypal-button-container"></div>
+        </div>
     </div>
 
+    <!-- JavaScript -->
     <script>
-        // Price calculation function
-        function calculatePrice() {
-            const scaleSelect = document.getElementById("scale");
-            const scalePrice = parseInt(scaleSelect.selectedOptions[0].dataset.price);
+        const scaleSelect = document.getElementById("scale");
+        const coatMarkingsSelect = document.getElementById("coat-markings");
+        const buildSelect = document.getElementById("build");
+        const poseSelect = document.getElementById("pose");
+        const totalPriceElement = document.getElementById("total-price");
 
-            let markingsPrice = 0;
-            const markingsSelect = document.getElementById("coat-markings");
-            for (let option of markingsSelect.selectedOptions) {
+        // Update total price
+        function updateTotalPrice() {
+            let totalPrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price);
+            
+            // Add cost of coat markings
+            Array.from(coatMarkingsSelect.selectedOptions).forEach(option => {
                 if (option.value !== "Socks" && option.value !== "Face") {
-                    markingsPrice += 20; // $20 for each marking selected
+                    totalPrice += 20;
                 }
+            });
+
+            // Add cost of build
+            if (buildSelect.value === "Draft") {
+                totalPrice += 40;
+            } else if (buildSelect.value === "Specific Breed") {
+                totalPrice += 70;
             }
 
-            const buildSelect = document.getElementById("build");
-            const buildPrice = buildSelect.value === "Draft" ? 40 : (buildSelect.value === "Specific Breed" ? 70 : 0);
-
-            const poseSelect = document.getElementById("pose");
-            const posePrice = poseSelect.value === "Running" ? 20 : (poseSelect.value === "Special gait" ? 40 : 0);
-
-            const accessoriesSelect = document.getElementById("accessories");
-            let accessoriesPrice = 0;
-            for (let option of accessoriesSelect.selectedOptions) {
-                if (option.value === "Diorama") {
-                    accessoriesPrice += 70;
-                } else if (option.value === "Tack") {
-                    accessoriesPrice += 150;
-                }
+            // Add cost of pose
+            if (poseSelect.value === "Running" || poseSelect.value === "Rearing") {
+                totalPrice += 30;
             }
 
-            const totalPrice = scalePrice + markingsPrice + buildPrice + posePrice + accessoriesPrice;
-
-            // If the model is 1:32nd scale, apply half the cost of additional options
-            let paymentPrice = totalPrice;
-            if (scaleSelect.value === "1:32nd") {
-                // Apply half price only for the additional options (not base price)
-                paymentPrice = scalePrice + (markingsPrice + buildPrice + posePrice + accessoriesPrice) / 2;
-            }
-
-            // Update PayPal Button with the calculated price
-            updatePayPalButton(paymentPrice);
+            totalPriceElement.textContent = totalPrice;
         }
 
-        // Update PayPal button to charge the correct price
-        function updatePayPalButton(totalPrice) {
-            paypal.Buttons({
-                createOrder: function(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                value: totalPrice.toString(),
-                            },
-                            description: "Deposit for commission (half price)",
-                        }],
-                    });
-                },
-                onApprove: function(data, actions) {
-                    return actions.order.capture().then(function(details) {
-                        alert("Payment completed! Thank you, " + details.payer.name.given_name);
-                    });
-                }
-            }).render('#paypal-button-container');
-        }
+        // Listen for changes to recalculate total price
+        scaleSelect.addEventListener("change", updateTotalPrice);
+        coatMarkingsSelect.addEventListener("change", updateTotalPrice);
+        buildSelect.addEventListener("change", updateTotalPrice);
+        poseSelect.addEventListener("change", updateTotalPrice);
 
-        // Event listener for all input fields to recalculate the price
-        const inputs = document.querySelectorAll("#scale, #coat-markings, #build, #pose, #accessories");
-        inputs.forEach(input => {
-            input.addEventListener("change", calculatePrice);
-        });
-
-        // Initial calculation
-        calculatePrice();
+        // PayPal button setup
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: totalPriceElement.textContent
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    alert("Transaction completed by " + details.payer.name.given_name);
+                });
+            }
+        }).render('#paypal-button-container');
     </script>
 </body>
 </html>
