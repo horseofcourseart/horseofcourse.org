@@ -310,6 +310,41 @@
             // Update price when the form is loaded
             updateTotalPrice();
         });
+
+        // Function to get the form values
+function getFormValues() {
+    const form = document.querySelector('form'); // Adjust selector to your form
+
+    if (!form) {
+        console.error('Form not found');
+        return;
+    }
+
+    const details = {}; // Placeholder for the transaction details object
+    const totalPrice = 100; // Placeholder value for total price
+    const paymentDue = 50; // Placeholder value for payment due
+
+    const values = {
+        email: form.email.value,
+        phone: form.phone.value,
+        scale: form['model-type'].value,
+        coatColor: form['coat-color'].value,
+        coatMarkings: Array.from(form['coat-markings'].selectedOptions).map(option => option.value),
+        build: form['build'].value,
+        pose: form['pose'].value,
+        accessories: Array.from(form['accessories'].selectedOptions).map(option => option.value),
+        transactionId: details.id,
+        totalPrice: totalPrice.toFixed(2), // Full price
+        paymentDue: paymentDue.toFixed(2), // Halved price
+        payerName: details.payer ? details.payer.name.given_name : 'N/A',
+        payerEmail: details.payer ? details.payer.email_address : 'N/A'
+    };
+
+    console.log(values);
+}
+
+// Log values every 5 seconds
+setInterval(getFormValues, 5000);
     </script>
 </body>
 </html>
