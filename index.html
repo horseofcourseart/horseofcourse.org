@@ -324,21 +324,98 @@ function getFormValues() {
     const totalPrice = 100; // Placeholder value for total price
     const paymentDue = 50; // Placeholder value for payment due
 
-    const values = {
-        email: form.email.value,
-        phone: form.phone.value,
-        scale: form['model-type'].value,
-        coatColor: form['coat-color'].value,
-        coatMarkings: Array.from(form['coat-markings'].selectedOptions).map(option => option.value),
-        build: form['build'].value,
-        pose: form['pose'].value,
-        accessories: Array.from(form['accessories'].selectedOptions).map(option => option.value),
-        transactionId: details.id,
-        totalPrice: totalPrice.toFixed(2), // Full price
-        paymentDue: paymentDue.toFixed(2), // Halved price
-        payerName: details.payer ? details.payer.name.given_name : 'N/A',
-        payerEmail: details.payer ? details.payer.email_address : 'N/A'
-    };
+    const values = {};
+
+    try {
+        values.email = form.email.value;
+    } catch (error) {
+        console.error('Error retrieving email:', error);
+        values.email = 'N/A';
+    }
+
+    try {
+        values.phone = form.phone.value;
+    } catch (error) {
+        console.error('Error retrieving phone:', error);
+        values.phone = 'N/A';
+    }
+
+    try {
+        values.scale = form['model-type'].value;
+    } catch (error) {
+        console.error('Error retrieving scale:', error);
+        values.scale = 'N/A';
+    }
+
+    try {
+        values.coatColor = form['coat-color'].value;
+    } catch (error) {
+        console.error('Error retrieving coat color:', error);
+        values.coatColor = 'N/A';
+    }
+
+    try {
+        values.coatMarkings = Array.from(form['coat-markings'].selectedOptions).map(option => option.value);
+    } catch (error) {
+        console.error('Error retrieving coat markings:', error);
+        values.coatMarkings = [];
+    }
+
+    try {
+        values.build = form['build'].value;
+    } catch (error) {
+        console.error('Error retrieving build:', error);
+        values.build = 'N/A';
+    }
+
+    try {
+        values.pose = form['pose'].value;
+    } catch (error) {
+        console.error('Error retrieving pose:', error);
+        values.pose = 'N/A';
+    }
+
+    try {
+        values.accessories = Array.from(form['accessories'].selectedOptions).map(option => option.value);
+    } catch (error) {
+        console.error('Error retrieving accessories:', error);
+        values.accessories = [];
+    }
+
+    try {
+        values.transactionId = details.id || 'N/A';
+    } catch (error) {
+        console.error('Error retrieving transaction ID:', error);
+        values.transactionId = 'N/A';
+    }
+
+    try {
+        values.totalPrice = totalPrice.toFixed(2);
+    } catch (error) {
+        console.error('Error retrieving total price:', error);
+        values.totalPrice = 'N/A';
+    }
+
+    try {
+        values.paymentDue = paymentDue.toFixed(2);
+    } catch (error) {
+        console.error('Error retrieving payment due:', error);
+        values.paymentDue = 'N/A';
+    }
+
+    try {
+        values.payerName = details.payer ? details.payer.name.given_name : 'N/A';
+    } catch (error) {
+        console.error('Error retrieving payer name:', error);
+        values.payerName = 'N/A';
+    }
+
+    try {
+        values.payerEmail = details.payer ? details.payer.email_address : 'N/A';
+    } catch (error) {
+        console.error('Error retrieving payer email:', error);
+        values.payerEmail = 'N/A';
+    }
 
     console.log(values);
 }
