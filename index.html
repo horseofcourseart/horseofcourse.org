@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horse Customization & Payment</title>
+    <script src="https://www.paypal.com/sdk/js?client-id=AQXLoLhl6HRzfms4Et1kRH3N5OiJEj8jOITyVkFWLWQjEBXtAiSylPyBdBpdyaXHhArpUMs_kNhxBiU2&currency=USD"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #gallery {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        #gallery img {
+            width: 200px;
+            height: 200px;
+            margin: 5px;
+        }
+
+        .form-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-container select, .form-container input[type="text"] {
+            width: 200px;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .paypal-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Horse Customization and Order</h1>
+
+    <!-- Gallery -->
+    <div id="gallery">
+        <!-- Images for each scale: 1:9th, 1:12th, and 1:32nd -->
+        <div id="gallery-9" class="gallery-folder">
+            <h3>1:9th Scale Horses</h3>
+            <img src="9/horse1.jpg" alt="Horse 1">
+            <img src="9/horse2.jpg" alt="Horse 2">
+            <img src="9/horse3.jpg" alt="Horse 3">
+        </div>
+        <div id="gallery-12" class="gallery-folder">
+            <h3>1:12th Scale Horses</h3>
+            <img src="12/horse1.jpg" alt="Horse 1">
+            <img src="12/horse2.jpg" alt="Horse 2">
+            <img src="12/horse3.jpg" alt="Horse 3">
+        </div>
+        <div id="gallery-32" class="gallery-folder">
+            <h3>1:32nd Scale Horses</h3>
+            <img src="32/horse1.jpg" alt="Horse 1">
+            <img src="32/horse2.jpg" alt="Horse 2">
+            <img src="32/horse3.jpg" alt="Horse 3">
+        </div>
+    </div>
+
+    <!-- Customization Form -->
+    <div class="form-container">
+        <form id="horse-customization-form" action="https://formspree.io/f/myzyapwz" method="POST">
+            <!-- Model Type -->
+            <h3>Choose Model Type</h3>
+            <select id="scale" name="scale">
+                <option value="1:32nd" data-price="50">1:32nd Scale - $50</option>
+                <option value="1:12th" data-price="150">1:12th Scale - $150</option>
+                <option value="1:9th" data-price="300">1:9th Scale - $300</option>
+            </select>
+
+            <!-- Coat Color -->
+            <h3>Choose Coat Color</h3>
+            <select id="coat-color" name="coat-color">
+                <option value="Bay">Bay</option>
+                <option value="Chestnut">Chestnut</option>
+                <option value="Seal">Seal</option>
+                <option value="Black">Black</option>
+                <option value="Grey">Grey</option>
+                <option value="White">White</option>
+                <option value="Palomino">Palomino</option>
+                <option value="Buckskin">Buckskin</option>
+                <option value="Cream">Cream</option>
+                <option value="Dun">Dun</option>
+            </select>
+
+            <!-- Coat Markings (Multi-select) -->
+            <h3>Select Coat Markings</h3>
+            <select id="coat-markings" name="coat-markings" multiple>
+                <option value="Socks">Socks (Free)</option>
+                <option value="Face">Face (Free)</option>
+                <option value="Pinto">Pinto (+$20)</option>
+                <option value="Robicano">Robicano (+$20)</option>
+                <option value="Roan">Roan (+$20)</option>
+                <option value="Blanket">Blanket (+$20)</option>
+                <option value="Leopard">Leopard (+$20)</option>
+                <option value="Snowflake">Snowflake (+$20)</option>
+                <option value="Dapple">Dapple (+$20)</option>
+                <option value="Smoky">Smoky (+$20)</option>
+            </select>
+
+            <!-- Build -->
+            <h3>Build Type</h3>
+            <select id="build" name="build">
+                <option value="Standard">Standard (Free)</option>
+                <option value="Pony">Pony (Free)</option>
+                <option value="Mini">Mini (Free)</option>
+                <option value="Draft">Draft (+$40)</option>
+                <option value="Specific Breed">Specific Breed (+$70)</option>
+            </select>
+
+            <!-- Pose -->
+            <h3>Select Pose</h3>
+            <select id="pose" name="pose">
+                <option value="Standing">Standing (Free)</option>
+                <option value="Walking">Walking (Free)</option>
+                <option value="Running">Running (+$20)</option>
+                <option value="Special gait">Special gait (+$40)</option>
+                <option value="Jumping">Jumping (+$40)</option>
+                <option value="Rearing">Rearing (+$40)</option>
+                <option value="Dynamic">Dynamic (+$70)</option>
+            </select>
+
+            <!-- Accessories -->
+            <h3>Select Accessories</h3>
+            <select id="accessories" name="accessories" multiple>
+                <option value="Diorama">Diorama (+$70)</option>
+                <option value="Tack">Tack (+$150)</option>
+            </select>
+
+            <!-- Comments -->
+            <h3>Comments</h3>
+            <input type="text" name="comments" placeholder="Enter any special requests or comments" />
+
+            <!-- PayPal Button -->
+            <div class="paypal-button-container" id="paypal-button-container"></div>
+
+            <!-- Submit Formspree -->
+            <input type="submit" value="Submit Form" />
+        </form>
+    </div>
+
+    <script>
+        // Price calculation function
+        function calculatePrice() {
+            const scaleSelect = document.getElementById("scale");
+            const scalePrice = parseInt(scaleSelect.selectedOptions[0].dataset.price);
+
+            let markingsPrice = 0;
+            const markingsSelect = document.getElementById("coat-markings");
+            for (let option of markingsSelect.selectedOptions) {
+                if (option.value !== "Socks" && option.value !== "Face") {
+                    markingsPrice += 20; // $20 for each marking selected
+                }
+            }
+
+            const buildSelect = document.getElementById("build");
+            const buildPrice = buildSelect.value === "Draft" ? 40 : (buildSelect.value === "Specific Breed" ? 70 : 0);
+
+            const poseSelect = document.getElementById("pose");
+            const posePrice = poseSelect.value === "Running" ? 20 : (poseSelect.value === "Special gait" ? 40 : 0);
+
+            const accessoriesSelect = document.getElementById("accessories");
+            let accessoriesPrice = 0;
+            for (let option of accessoriesSelect.selectedOptions) {
+                if (option.value === "Diorama") {
+                    accessoriesPrice += 70;
+                } else if (option.value === "Tack") {
+                    accessoriesPrice += 150;
+                }
+            }
+
+            const totalPrice = scalePrice + markingsPrice + buildPrice + posePrice + accessoriesPrice;
+
+            // If the model is 1:32nd scale, apply half the cost of additional options
+            let paymentPrice = totalPrice;
+            if (scaleSelect.value === "1:32nd") {
+                // Apply half price only for the additional options (not base price)
+                paymentPrice = scalePrice + (markingsPrice + buildPrice + posePrice + accessoriesPrice) / 2;
+            }
+
+            // Update PayPal Button with the calculated price
+            updatePayPalButton(paymentPrice);
+        }
+
+        // Update PayPal button to charge the correct price
+        function updatePayPalButton(totalPrice) {
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: totalPrice.toString(),
+                            },
+                            description: "Deposit for commission (half price)",
+                        }],
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        alert("Payment completed! Thank you, " + details.payer.name.given_name);
+                    });
+                }
+            }).render('#paypal-button-container');
+        }
+
+        // Event listener for all input fields to recalculate the price
+        const inputs = document.querySelectorAll("#scale, #coat-markings, #build, #pose, #accessories");
+        inputs.forEach(input => {
+            input.addEventListener("change", calculatePrice);
+        });
+
+        // Initial calculation
+        calculatePrice();
+    </script>
+</body>
+</html>
