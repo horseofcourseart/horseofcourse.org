@@ -51,16 +51,17 @@
         }
         
         #carousel {
-          display: flex; /* Arrange images in a row */
-          width: max-content; /* Expand to fit the images */
+          display: flex;
+          width: max-content; /* Allow images to be placed next to each other */
+          height: 100%; /* Ensure the carousel height is confined to the container */
           animation: scroll-left 40s linear infinite; /* Smooth scrolling animation */
         }
         
         #carousel img {
-          height: 100%; /* Make images scale to fill the height of the carousel container */
-          width: 100%; /* Maintain aspect ratio */
-          object-fit: cover; /* Make sure images cover the container without distortion */
-          flex-shrink: 0; /* Prevent shrinking */
+          height: 100%; /* Ensure they fill the full height of the container */
+          width: auto; /* Let the width adjust proportionally */
+          object-fit: cover; /* Crop or zoom images to fill the area without stretching */
+          flex-shrink: 0; /* Prevent images from shrinking */
           margin: 0 5px; /* Optional: space between images */
         }
         
@@ -196,6 +197,30 @@
     </div>
     <!-- JavaScript -->
     <script>
+        window.onload = function () {
+            const carousel = document.getElementById('carousel');
+            const images = Array.from(carousel.children);
+        
+            // Clone the first set of images for the placeholder
+            const placeholderImages = images.map((img) => img.cloneNode(true));
+            placeholderImages.forEach((img) => carousel.appendChild(img));
+        
+            // Wait for the animation to complete, then reset
+            const animationDuration = 20000; // Match the animation duration in milliseconds (e.g., 20s)
+            setInterval(() => {
+              // Reset the animation
+              carousel.style.transition = 'none'; // Remove animation temporarily
+              carousel.style.transform = 'translateX(0)'; // Jump back to the start
+        
+              // Force a reflow to re-enable animation
+              void carousel.offsetWidth;
+        
+              // Re-enable the animation
+              carousel.style.transition = 'transform 20s linear';
+              carousel.style.transform = `translateX(-100%)`;
+            }, animationDuration);
+          };
+        
         const galleries = {
           "1:9": [
             { src: "9/AppaloosaSportHorse9.png", alt: "Appaloosa Sporthorse" },
