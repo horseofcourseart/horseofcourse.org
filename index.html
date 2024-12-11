@@ -6,9 +6,15 @@
     <title>Horse Customization & Payment</title>
     <script src="https://www.paypal.com/sdk/js?client-id=AQXLoLhl6HRzfms4Et1kRH3N5OiJEj8jOITyVkFWLWQjEBXtAiSylPyBdBpdyaXHhArpUMs_kNhxBiU2&components=buttons&currency=USD"></script>
     <style>
+        html {
+          height: 100%;
+          margin: 0;
+        }
+        
         body {
           font-family: 'Roboto', sans-serif;
           margin: 0;
+          height: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -17,23 +23,24 @@
         }
         
         .container {
-          display: grid;
-          grid-template-rows: auto 1fr 1fr;
-          grid-gap: 10px;
-          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
           width: 100%;
         }
         
-        header {
+        header, footer {
           text-align: center;
           background-color: #ffffff;
-          padding: 20px;
+          height: 12.5%; /* 1/8th of the screen */
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         #gallery {
+          height: 25%; /* 2/8ths of the screen height */
           overflow: hidden;
           position: relative;
+          background-color: #f4f4f4; /* Just for visual distinction */
         }
         
         #carousel-container {
@@ -46,7 +53,12 @@
         #carousel {
           display: flex; /* Arrange images in a row */
           width: max-content; /* Expand to fit the images */
-          animation: scroll-left 20s linear infinite; /* Smooth scrolling animation */
+          animation: scroll-left 40s linear infinite; /* Smooth scrolling animation */
+        }
+
+        #form-section {
+          height: 50%; /* 4/8ths of the screen height */
+          background-color: #e0e0e0; /* Just for visual distinction */
         }
         
         #carousel img {
@@ -85,7 +97,7 @@
         </div>
       </section>
     
-      <section id="form">
+      <section id="form-section">
             <form id="order-form">
 
                 <!-- Email Field -->
@@ -168,7 +180,7 @@
             </form>
         </section>
 
-        <section>
+        <footer>
             <!-- Total Price -->
             <h3>Total Price: <span id="total-price">$0.00</span></h3>
             <h3>Payment Due: <span id="payment-due">$0.00</span></h3>
@@ -177,7 +189,7 @@
             <div class="paypal-button-container">
                 <div id="paypal-button-container"></div>
             </div>
-        </section>
+        </footer>
         
     </div>
     <!-- JavaScript -->
