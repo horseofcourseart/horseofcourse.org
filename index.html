@@ -35,21 +35,27 @@
 
         /* Gallery Section Styling */
         #gallery {
-            height: 30%;
-            overflow: hidden;
-            position: relative;
-            background-color: #f4f4f4;
-        }
+			height: 30%; /* Adjust as needed */
+			overflow: hidden;
+			position: relative;
+			background-color: #f4f4f4;
+			padding: 5px 0; /* Add padding between slider and gallery edges */
+			display: flex;
+			justify-content: center; /* Center the slider horizontally */
+			align-items: center; /* Center the slider vertically */
+		}
 
         .slider {
-            background: white;
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, .125);
-            height: 100px;
-            margin: auto;
-            overflow: hidden;
-            position: relative;
-            width: 960px;
-        }
+			height: 100%; /* Fully fill the height of the gallery minus padding */
+			width: 100%; /* Fully fill the width of the gallery */
+			position: relative;
+			overflow: hidden;
+			display: flex;
+			justify-content: center; /* Center content horizontally */
+			align-items: center; /* Center content vertically */
+			box-shadow: 0 10px 20px -5px rgba(0, 0, 0, .125);
+			background: white;
+		}
 
         /* Gradient effect for slider sides */
         .slider::before, .slider::after {
@@ -74,16 +80,20 @@
 
         /* Slide track for infinite scroll */
         .slide-track {
-            animation: scroll 40s linear infinite;
-            display: flex;
-            width: max-content;
-        }
+			display: flex;
+			height: 100%; /* Match the height of the slider */
+			align-items: center; /* Ensure slides are vertically centered */
+			animation: scroll 40s linear infinite;
+		}
 
         .slide {
-            height: 100px;
-            width: 250px;
-            flex-shrink: 0;
-        }
+			height: 100%; /* Ensure slides fully fill the height of the slider */
+			width: 250px; /* Set the width for consistent sizing */
+			flex-shrink: 0;
+			display: flex;
+			justify-content: center; /* Center image horizontally */
+			align-items: center; /* Center image vertically */
+		}
 
         /* Smooth scrolling animation */
         @keyframes scroll {
@@ -93,10 +103,10 @@
 
         /* Style for images in the carousel */
         .slider img {
-            height: 100%;
-            width: auto;
-            object-fit: cover;
-            flex-shrink: 0;
+            height: 100%; /* Ensure image fills the slide height */
+			width: auto; /* Maintain aspect ratio */
+			flex-shrink: 0;
+			object-fit: contain;
             margin: 0 5px;
         }
 
@@ -299,9 +309,6 @@
 					const img = document.createElement("img");
 					img.src = image.src;
 					img.alt = image.alt;
-					img.style.height = "100%";
-					img.style.objectFit = "contain";
-					img.style.flexShrink = "0";
 					carousel.appendChild(img);
 				});
 
@@ -311,16 +318,35 @@
 					const img = document.createElement("img");
 					img.src = image.src;
 					img.alt = image.alt;
-					img.style.height = "100%";
-					img.style.objectFit = "contain";
-					img.style.flexShrink = "0";
 					carousel.appendChild(img);
 				});
 
 				// Adjust track width for seamless scrolling
 				const totalImages = duplicates.length;
-				carousel.style.width = `calc(250px * ${totalImages})`;
+				const scrollWidth = 250 * totalImages;
+				carousel.style.width = `${scrollWidth}px`;
+
+				// Dynamically adjust keyframe animation based on the number of images
+				const animationTime = totalImages * 5; // 5s per image for smooth animation
+				const styleSheet = document.styleSheets[0];
+				const keyframes = `
+					@keyframes scroll {
+						0% { transform: translateX(0); }
+						100% { transform: translateX(-${scrollWidth}px); }
+					}
+				`;
+
+				// Remove existing keyframes (if any) and insert new one
+				const existingIndex = Array.from(styleSheet.cssRules).findIndex(rule => rule.name === "scroll");
+				if (existingIndex > -1) {
+					styleSheet.deleteRule(existingIndex);
+				}
+				styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+
+				// Apply the animation
+				carousel.style.animation = `scroll ${animationTime}s linear infinite`;
 			};
+
 
 			// Calculate and update total price and payment due
 			const updateTotalPrice = () => {
