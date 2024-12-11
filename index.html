@@ -7,193 +7,260 @@
     <script src="https://www.paypal.com/sdk/js?client-id=AQXLoLhl6HRzfms4Et1kRH3N5OiJEj8jOITyVkFWLWQjEBXtAiSylPyBdBpdyaXHhArpUMs_kNhxBiU2&components=buttons&currency=USD"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+          font-family: 'Roboto', sans-serif;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          background-color: #f9f9f9;
+          color: #333;
         }
-
-        h1 {
-            text-align: center;
+        
+        .container {
+          display: grid;
+          grid-template-rows: auto 1fr 1fr;
+          grid-gap: 10px;
+          height: 100vh;
+          width: 100%;
         }
-
+        
+        header {
+          text-align: center;
+          background-color: #ffffff;
+          padding: 20px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
         #gallery {
-            display: flex;
-            justify-content: center;
-            margin: 20px;
+          overflow: hidden;
+          position: relative;
         }
-
-        #gallery img {
-            width: 200px;
-            height: 200px;
-            margin: 5px;
+        
+        .slider {
+          display: flex;
+          transition: transform 0.5s ease-in-out;
         }
-
-        .form-container {
-            text-align: center;
-            margin-top: 20px;
+        
+        .slider img {
+          min-width: 100%;
+          max-height: 300px;
+          object-fit: cover;
         }
-
-        .form-container select, .form-container input[type="text"], .form-container input[type="email"], .form-container input[type="tel"] {
-            width: 200px;
-            padding: 10px;
-            margin: 10px;
-        }
-
-        .paypal-button-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
+        
+        #form {
+          background-color: #ffffff;
+          overflow-y: auto;
+          padding: 20px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
+    <div class="container">
+      <header>
+        <h1>Model Horse Sales</h1>
+      </header>
+    
+      <section id="gallery">
+        <div id="carousel" class="slider">
+          <!-- Images will dynamically update based on selected scale -->
+        </div>
+      </section>
+    
+      <section id="form">
+        <form>
+          <label for="scale">Select Horse Scale:</label>
+          <select id="scale">
+            <option value="1">1:9 Scale</option>
+            <option value="2">1:12 Scale</option>
+            <option value="3">1:18 Scale</option>
+          </select>
+          
+          <!-- Other form inputs -->
+        </form>
+      </section>
+    </div>
+    
     <h1>Horse Customization and Order</h1>
 
-    <!-- Gallery -->
-    <div id="gallery">
-        <!-- Images for each scale: 1:9th, 1:12th, and 1:32nd -->
-        <div id="gallery-9" class="gallery-folder">
-            <h3>1:9th Scale Horses</h3>
-            <img src="9/AppaloosaSportHorse9.png" alt="Appaloosa Sporthorse">
-            <img src="9/BloodBayArabian9.png" alt="Blood Bay Arabian">
-            <img src="9/BuckskinQuarterhorse9.png" alt="Buckskin Quarterhorse">
-            <img src="9/ClevelandBay9.png" alt="Cleveland Bay">
-            <img src="9/DappleGreyDraftHorse9.png" alt="Dapple Grey Draft">
-            <img src="9/DunWelshCob9.png" alt="Dun Welsh Cob">
-            <img src="9/DutchWarmbloodTobanio9.png" alt="Dutch Warmblood Tobanio">
-            <img src="9/GreyedDrafthorseBuckskin9.png" alt="Buckskin Greyed Draft">
-            <img src="9/LeopardAppaloosa9.png" alt="Leopard Appaloosa">
-            <img src="9/DappleGreyMorgan9.png" alt="Dapple Grey Morgan">
-            <img src="9/BayRussianHeavyDraft9.png" alt="Bay Russian Heavy Draft">
-        </div>
-        <div id="gallery-12" class="gallery-folder">
-            <h3>1:12th Scale Horses</h3>
-            <img src="12/AppaloosaSportHorse12.png" alt="Appaloosa Sport Horse ">
-            <img src="12/BlackHanoverian12.png" alt="Black Hanoverian">
-            <img src="12/BloodBayArabian12.png" alt="Blood Bay Arabian">
-            <img src="12/BuckskinQuarterhorse12.png" alt="Buckskin Quarterhorse">
-            <img src="12/ClevelandBay12.png" alt="Cleveland Bay">
-            <img src="12/DappleGreyMorgan12.png" alt="Dapple Grey Morgan">
-            <img src="12/DutchWarmbloodTobanio12.png" alt="Tobanio Dutch Warmblood">
-            <img src="12/GreyedDrafthorseBuckskin12.png" alt="Buckskin Greyed Draft">
-            <img src="12/LeopardAppaloosa12.png" alt="Leopard Appaloosa">
-            <img src="12/NezPerceAppaloosa12.png" alt="Blanket Nez Perce">
-            <img src="12/PalominoQuarterhorse12.png" alt="Palomino Quarterhorse">
-            <img src="12/RedBayTW12.png" alt="Red Bay Tennessee Walking Horse">
-        </div>
-        <div id="gallery-32" class="gallery-folder">
-            <h3>1:32nd Scale Horses</h3>
-            <img src="32/32Chestnutsockfacestandardwalking.png" alt="Bay Trakehner">
-            <img src="32/32baysockstandardstanding.png" alt="Gypsy Vanner">
-            <img src="32/32blackfacesocksdraftrearing.png" alt="Irish Sporthorse">
-            <img src="32/32dunfacesocksnowflakestandardrearing.png" alt="Dun Snowflake Appaloosa">
-            <img src="32/32greydapplestandardrunning.png" alt="Dapple Grey Dutch Warmblood">
-            <img src="32/AppaloosaSportHorse32.png" alt="Appaloosa Sporthorse">
-            <img src="32/BlackHanoverian32.png" alt="Black Hanoverian">
-            <img src="32/BloodBayArabian32.png" alt="Blood Bay Arabian">
-            <img src="32/BuckskinQuarterhorse32.png" alt="Buckskin Quarterhorse">
-            <img src="32/ClevelandBay32.png" alt="Cleveland Bay">
-            <img src="32/DappleGreyMorgan32.png" alt="Dapple Grey Morgan">
-            <img src="32/DutchWarmbloodTobanio32.png" alt="Tobanio Dutch Warmblood">
-            <img src="32/GreyedDrafthorseBuckskin32.png" alt="Buckskin Greyed Draft">
-            <img src="32/LeopardAppaloosa32.png" alt="Leopard Appaloosa">
-        </div>
-    </div>
+    <div class="container">
 
-    <div class="order-form">
-        <h1>Custom Horse Model Order</h1>
-        <!-- Form -->
-        <form id="order-form">
+        <header>
+            <h1>Model Horse Sales</h1>
+        </header>
 
-            <!-- Email Field -->
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br><br>
+        <section id="gallery">
+            <div id="carousel" class="slider">
+                <!-- Images will dynamically update based on selected scale -->
+            </div>
+        </section>
+
+        <section id="form">
+            <form id="order-form">
+
+                <!-- Email Field -->
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+            
+                <!-- Phone Number Field -->
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required><br><br>
+                <!-- Model Type -->
+                <label for="model-type">Model Type:</label>
+                <select id="model-type" name="model-type" required>
+                    <option value="1:32" data-price="50">1:32 ($50)</option>
+                    <option value="1:12" data-price="150">1:12 ($150)</option>
+                    <option value="1:9" data-price="300">1:9 ($300)</option>
+                </select>
         
-            <!-- Phone Number Field -->
-            <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="phone" required><br><br>
-            <!-- Model Type -->
-            <label for="model-type">Model Type:</label>
-            <select id="model-type" name="model-type" required>
-                <option value="1:32" data-price="50">1:32 ($50)</option>
-                <option value="1:12" data-price="150">1:12 ($150)</option>
-                <option value="1:9" data-price="300">1:9 ($300)</option>
-            </select>
-    
-            <!-- Coat Color -->
-            <label for="coat-color">Coat Color:</label>
-            <select id="coat-color" name="coat-color" required>
-                <option value="Bay" data-price="0">Bay</option>
-                <option value="Chestnut" data-price="0">Chestnut</option>
-                <option value="Seal" data-price="0">Seal</option>
-                <option value="Black" data-price="0">Black</option>
-                <option value="Grey" data-price="0">Grey</option>
-                <option value="White" data-price="0">White</option>
-                <option value="Palomino" data-price="0">Palomino</option>
-                <option value="Buckskin" data-price="0">Buckskin</option>
-                <option value="Cream" data-price="0">Cream</option>
-                <option value="Dun" data-price="0">Dun</option>
-            </select>
-    
-            <!-- Coat Markings -->
-            <label for="coat-markings">Coat Markings:</label>
-            <select id="coat-markings" name="coat-markings" multiple>
-                <option value="Socks" data-price="0">Socks (Free)</option>
-                <option value="Face" data-price="0">Face (Free)</option>
-                <option value="Pinto" data-price="20">Pinto (+$20/+10 for 1:32)</option>
-                <option value="Robicano" data-price="20">Robicano (+$20/+10 for 1:32)</option>
-                <option value="Roan" data-price="20">Roan (+$20/+10 for 1:32)</option>
-                <option value="Blanket" data-price="20">Blanket (+$20/+10 for 1:32)</option>
-                <option value="Leopard" data-price="20">Leopard (+$20/+10 for 1:32)</option>
-                <option value="Snowflake" data-price="20">Snowflake (+$20/+10 for 1:32)</option>
-                <option value="Dapple" data-price="20">Dapple (+$20/+10 for 1:32)</option>
-                <option value="Smoky" data-price="20">Smoky (+$20/+10 for 1:32)</option>
-            </select>
-    
-            <!-- Build -->
-            <label for="build">Build:</label>
-            <select id="build" name="build" required>
-                <option value="Standard" data-price="0">Standard (Free)</option>
-                <option value="Pony" data-price="0">Pony (Free)</option>
-                <option value="Mini" data-price="0">Mini (Free)</option>
-                <option value="Draft" data-price="40">Draft (+$40/+20 for 1:32)</option>
-                <option value="Specific Breed" data-price="70">Specific Breed (+$70/+35 for 1:32)</option>
-            </select>
-    
-            <!-- Pose -->
-            <label for="pose">Pose:</label>
-            <select id="pose" name="pose" required>
-                <option value="Standing" data-price="0">Standing (Free)</option>
-                <option value="Walking" data-price="0">Walking (Free)</option>
-                <option value="Running" data-price="20">Running (+$20/+10 for 1:32)</option>
-                <option value="Special Gait" data-price="40">Special Gait (+$40/+20 for 1:32)</option>
-                <option value="Jumping" data-price="40">Jumping (+$40/+20 for 1:32)</option>
-                <option value="Rearing" data-price="40">Rearing (+$40/+20 for 1:32)</option>
-                <option value="Dynamic" data-price="70">Dynamic (+$70/+35 for 1:32)</option>
-            </select>
-    
-            <!-- Accessories -->
-            <label for="accessories">Accessories:</label>
-            <select id="accessories" name="accessories" multiple>
-                <option value="Diorama" data-price="70">Diorama (+$70/+35 for 1:32)</option>
-                <option value="Tack" data-price="150">Tack (+$150/+75 for 1:32)</option>
-            </select>
-
-            <!-- Notes Field -->
-            <label for="notes">Notes:</label>
-            <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Enter any additional notes here"></textarea><br><br>
-        </form>
-
-        <!-- Total Price -->
-        <h3>Total Price: <span id="total-price">$0.00</span></h3>
-        <h3>Payment Due: <span id="payment-due">$0.00</span></h3>
+                <!-- Coat Color -->
+                <label for="coat-color">Coat Color:</label>
+                <select id="coat-color" name="coat-color" required>
+                    <option value="Bay" data-price="0">Bay</option>
+                    <option value="Chestnut" data-price="0">Chestnut</option>
+                    <option value="Seal" data-price="0">Seal</option>
+                    <option value="Black" data-price="0">Black</option>
+                    <option value="Grey" data-price="0">Grey</option>
+                    <option value="White" data-price="0">White</option>
+                    <option value="Palomino" data-price="0">Palomino</option>
+                    <option value="Buckskin" data-price="0">Buckskin</option>
+                    <option value="Cream" data-price="0">Cream</option>
+                    <option value="Dun" data-price="0">Dun</option>
+                </select>
         
-        <!-- PayPal Button -->
-        <div class="paypal-button-container">
-            <div id="paypal-button-container"></div>
-        </div>
-    </div>
+                <!-- Coat Markings -->
+                <label for="coat-markings">Coat Markings:</label>
+                <select id="coat-markings" name="coat-markings" multiple>
+                    <option value="Socks" data-price="0">Socks (Free)</option>
+                    <option value="Face" data-price="0">Face (Free)</option>
+                    <option value="Pinto" data-price="20">Pinto (+$20/+$10 for 1:32)</option>
+                    <option value="Robicano" data-price="20">Robicano (+$20/+$10 for 1:32)</option>
+                    <option value="Roan" data-price="20">Roan (+$20/+$10 for 1:32)</option>
+                    <option value="Blanket" data-price="20">Blanket (+$20/+$10 for 1:32)</option>
+                    <option value="Leopard" data-price="20">Leopard (+$20/+$10 for 1:32)</option>
+                    <option value="Snowflake" data-price="20">Snowflake (+$20/+$10 for 1:32)</option>
+                    <option value="Dapple" data-price="20">Dapple (+$20/+$10 for 1:32)</option>
+                    <option value="Smoky" data-price="20">Smoky (+$20/+$10 for 1:32)</option>
+                </select>
+        
+                <!-- Build -->
+                <label for="build">Build:</label>
+                <select id="build" name="build" required>
+                    <option value="Standard" data-price="0">Standard (Free)</option>
+                    <option value="Pony" data-price="0">Pony (Free)</option>
+                    <option value="Mini" data-price="0">Mini (Free)</option>
+                    <option value="Draft" data-price="40">Draft (+$40/+$20 for 1:32)</option>
+                    <option value="Specific Breed" data-price="70">Specific Breed (+$70/+$35 for 1:32)</option>
+                </select>
+        
+                <!-- Pose -->
+                <label for="pose">Pose:</label>
+                <select id="pose" name="pose" required>
+                    <option value="Standing" data-price="0">Standing (Free)</option>
+                    <option value="Walking" data-price="0">Walking (Free)</option>
+                    <option value="Running" data-price="20">Running (+$20/+$10 for 1:32)</option>
+                    <option value="Special Gait" data-price="40">Special Gait (+$40/+$20 for 1:32)</option>
+                    <option value="Jumping" data-price="40">Jumping (+$40/+$20 for 1:32)</option>
+                    <option value="Rearing" data-price="40">Rearing (+$40/+$20 for 1:32)</option>
+                    <option value="Dynamic" data-price="70">Dynamic (+$70/+$35 for 1:32)</option>
+                </select>
+        
+                <!-- Accessories -->
+                <label for="accessories">Accessories:</label>
+                <select id="accessories" name="accessories" multiple>
+                    <option value="Diorama" data-price="70">Diorama (+$70/+35 for 1:32)</option>
+                    <option value="Tack" data-price="150">Tack (+$150/+75 for 1:32)</option>
+                </select>
+    
+                <!-- Notes Field -->
+                <label for="notes">Notes:</label>
+                <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Enter any additional notes here"></textarea><br><br>
+            </form>
+        </section>
 
-        <!-- JavaScript -->
+        <section>
+            <!-- Total Price -->
+            <h3>Total Price: <span id="total-price">$0.00</span></h3>
+            <h3>Payment Due: <span id="payment-due">$0.00</span></h3>
+            
+            <!-- PayPal Button -->
+            <div class="paypal-button-container">
+                <div id="paypal-button-container"></div>
+            </div>
+        </section>
+
+
+    <!-- JavaScript -->
     <script>
+        const galleries = {
+          "1:9": [
+            { src: "9/AppaloosaSportHorse9.png", alt: "Appaloosa Sporthorse" },
+            { src: "9/BloodBayArabian9.png", alt: "Blood Bay Arabian" },
+            { src: "9/BuckskinQuarterhorse9.png", alt: "Buckskin Quarterhorse" },
+            { src: "9/ClevelandBay9.png", alt: "Cleveland Bay" },
+            { src: "9/DappleGreyDraftHorse9.png", alt: "Dapple Grey Draft" },
+            { src: "9/DunWelshCob9.png", alt: "Dun Welsh Cob" },
+            { src: "9/DutchWarmbloodTobanio9.png", alt: "Dutch Warmblood Tobanio" },
+            { src: "9/GreyedDrafthorseBuckskin9.png", alt: "Buckskin Greyed Draft" },
+            { src: "9/LeopardAppaloosa9.png", alt: "Leopard Appaloosa" },
+            { src: "9/DappleGreyMorgan9.png", alt: "Dapple Grey Morgan" },
+            { src: "9/BayRussianHeavyDraft9.png", alt: "Bay Russian Heavy Draft" },
+          ],
+          "1:12": [
+            { src: "12/AppaloosaSportHorse12.png", alt: "Appaloosa Sport Horse" },
+            { src: "12/BlackHanoverian12.png", alt: "Black Hanoverian" },
+            { src: "12/BloodBayArabian12.png", alt: "Blood Bay Arabian" },
+            { src: "12/BuckskinQuarterhorse12.png", alt: "Buckskin Quarterhorse" },
+            { src: "12/ClevelandBay12.png", alt: "Cleveland Bay" },
+            { src: "12/DappleGreyMorgan12.png", alt: "Dapple Grey Morgan" },
+            { src: "12/DutchWarmbloodTobanio12.png", alt: "Tobanio Dutch Warmblood" },
+            { src: "12/GreyedDrafthorseBuckskin12.png", alt: "Buckskin Greyed Draft" },
+            { src: "12/LeopardAppaloosa12.png", alt: "Leopard Appaloosa" },
+            { src: "12/NezPerceAppaloosa12.png", alt: "Blanket Nez Perce" },
+            { src: "12/PalominoQuarterhorse12.png", alt: "Palomino Quarterhorse" },
+            { src: "12/RedBayTW12.png", alt: "Red Bay Tennessee Walking Horse" },
+          ],
+          "1:32": [
+            { src: "32/32Chestnutsockfacestandardwalking.png", alt: "Bay Trakehner" },
+            { src: "32/32baysockstandardstanding.png", alt: "Gypsy Vanner" },
+            { src: "32/32blackfacesocksdraftrearing.png", alt: "Irish Sporthorse" },
+            { src: "32/32dunfacesocksnowflakestandardrearing.png", alt: "Dun Snowflake Appaloosa" },
+            { src: "32/32greydapplestandardrunning.png", alt: "Dapple Grey Dutch Warmblood" },
+            { src: "32/AppaloosaSportHorse32.png", alt: "Appaloosa Sporthorse" },
+            { src: "32/BlackHanoverian32.png", alt: "Black Hanoverian" },
+            { src: "32/BloodBayArabian32.png", alt: "Blood Bay Arabian" },
+            { src: "32/BuckskinQuarterhorse32.png", alt: "Buckskin Quarterhorse" },
+            { src: "32/ClevelandBay32.png", alt: "Cleveland Bay" },
+            { src: "32/DappleGreyMorgan32.png", alt: "Dapple Grey Morgan" },
+            { src: "32/DutchWarmbloodTobanio32.png", alt: "Tobanio Dutch Warmblood" },
+            { src: "32/GreyedDrafthorseBuckskin32.png", alt: "Buckskin Greyed Draft" },
+            { src: "32/LeopardAppaloosa32.png", alt: "Leopard Appaloosa" },
+          ],
+        };
+
+        
+        
+        const scaleSelect = document.getElementById('scale');
+        const carousel = document.getElementById('carousel');
+        
+        function updateGallery(scale) {
+          carousel.innerHTML = ''; // Clear existing images
+          galleries[scale].forEach(imgSrc => {
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            carousel.appendChild(img);
+          });
+        }
+        
+        // Initialize with the first scale
+        updateGallery(scaleSelect.value);
+        
+        // Update gallery when scale changes
+        scaleSelect.addEventListener('change', (e) => {
+          updateGallery(e.target.value);
+        });
+
+        
         document.addEventListener("DOMContentLoaded", function () {
             const scaleSelect = document.getElementById("model-type");
             const coatMarkingsSelect = document.getElementById("coat-markings");
