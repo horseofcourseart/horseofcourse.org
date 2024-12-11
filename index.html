@@ -198,109 +198,92 @@
     <!-- JavaScript -->
     <script>
         window.onload = function () {
-            const carousel = document.getElementById('carousel');
-            const images = Array.from(carousel.children);
-        
-            // Clone the first set of images for the placeholder
-            const placeholderImages = images.map((img) => img.cloneNode(true));
-            placeholderImages.forEach((img) => carousel.appendChild(img));
-        
-            // Wait for the animation to complete, then reset
-            const animationDuration = 20000; // Match the animation duration in milliseconds (e.g., 20s)
-            setInterval(() => {
-              // Reset the animation
-              carousel.style.transition = 'none'; // Remove animation temporarily
-              carousel.style.transform = 'translateX(0)'; // Jump back to the start
-        
-              // Force a reflow to re-enable animation
-              void carousel.offsetWidth;
-        
-              // Re-enable the animation
-              carousel.style.transition = 'transform 20s linear';
-              carousel.style.transform = `translateX(-100%)`;
-            }, animationDuration);
-          };
-        
-        const galleries = {
-          "1:9": [
-            { src: "9/AppaloosaSportHorse9.png", alt: "Appaloosa Sporthorse" },
-            { src: "9/BloodBayArabian9.png", alt: "Blood Bay Arabian" },
-            { src: "9/BuckskinQuarterhorse9.png", alt: "Buckskin Quarterhorse" },
-            { src: "9/ClevelandBay9.png", alt: "Cleveland Bay" },
-            { src: "9/DappleGreyDraftHorse9.png", alt: "Dapple Grey Draft" },
-            { src: "9/DunWelshCob9.png", alt: "Dun Welsh Cob" },
-            { src: "9/DutchWarmbloodTobanio9.png", alt: "Dutch Warmblood Tobanio" },
-            { src: "9/GreyedDrafthorseBuckskin9.png", alt: "Buckskin Greyed Draft" },
-            { src: "9/LeopardAppaloosa9.png", alt: "Leopard Appaloosa" },
-            { src: "9/DappleGreyMorgan9.png", alt: "Dapple Grey Morgan" },
-            { src: "9/BayRussianHeavyDraft9.png", alt: "Bay Russian Heavy Draft" },
-          ],
-          "1:12": [
-            { src: "12/AppaloosaSportHorse12.png", alt: "Appaloosa Sport Horse" },
-            { src: "12/BlackHanoverian12.png", alt: "Black Hanoverian" },
-            { src: "12/BloodBayArabian12.png", alt: "Blood Bay Arabian" },
-            { src: "12/BuckskinQuarterhorse12.png", alt: "Buckskin Quarterhorse" },
-            { src: "12/ClevelandBay12.png", alt: "Cleveland Bay" },
-            { src: "12/DappleGreyMorgan12.png", alt: "Dapple Grey Morgan" },
-            { src: "12/DutchWarmbloodTobanio12.png", alt: "Tobanio Dutch Warmblood" },
-            { src: "12/GreyedDrafthorseBuckskin12.png", alt: "Buckskin Greyed Draft" },
-            { src: "12/LeopardAppaloosa12.png", alt: "Leopard Appaloosa" },
-            { src: "12/NezPerceAppaloosa12.png", alt: "Blanket Nez Perce" },
-            { src: "12/PalominoQuarterhorse12.png", alt: "Palomino Quarterhorse" },
-            { src: "12/RedBayTW12.png", alt: "Red Bay Tennessee Walking Horse" },
-          ],
-          "1:32": [
-            { src: "32/32Chestnutsockfacestandardwalking.png", alt: "Bay Trakehner" },
-            { src: "32/32baysockstandardstanding.png", alt: "Gypsy Vanner" },
-            { src: "32/32blackfacesocksdraftrearing.png", alt: "Irish Sporthorse" },
-            { src: "32/32dunfacesocksnowflakestandardrearing.png", alt: "Dun Snowflake Appaloosa" },
-            { src: "32/32greydapplestandardrunning.png", alt: "Dapple Grey Dutch Warmblood" },
-            { src: "32/AppaloosaSportHorse32.png", alt: "Appaloosa Sporthorse" },
-            { src: "32/BlackHanoverian32.png", alt: "Black Hanoverian" },
-            { src: "32/BloodBayArabian32.png", alt: "Blood Bay Arabian" },
-            { src: "32/BuckskinQuarterhorse32.png", alt: "Buckskin Quarterhorse" },
-            { src: "32/ClevelandBay32.png", alt: "Cleveland Bay" },
-            { src: "32/DappleGreyMorgan32.png", alt: "Dapple Grey Morgan" },
-            { src: "32/DutchWarmbloodTobanio32.png", alt: "Tobanio Dutch Warmblood" },
-            { src: "32/GreyedDrafthorseBuckskin32.png", alt: "Buckskin Greyed Draft" },
-            { src: "32/LeopardAppaloosa32.png", alt: "Leopard Appaloosa" },
-          ],
-        };
-
-        
-        
         const scaleSelect = document.getElementById('model-type');
         const carousel = document.getElementById('carousel');
 
+        // Define the galleries with images for each scale
+        const galleries = {
+            "1:9": [
+                { src: "9/AppaloosaSportHorse9.png", alt: "Appaloosa Sporthorse" },
+                { src: "9/BloodBayArabian9.png", alt: "Blood Bay Arabian" },
+                { src: "9/BuckskinQuarterhorse9.png", alt: "Buckskin Quarterhorse" },
+                { src: "9/ClevelandBay9.png", alt: "Cleveland Bay" },
+                { src: "9/DappleGreyDraftHorse9.png", alt: "Dapple Grey Draft" },
+                { src: "9/DunWelshCob9.png", alt: "Dun Welsh Cob" },
+                { src: "9/DutchWarmbloodTobanio9.png", alt: "Dutch Warmblood Tobanio" },
+                { src: "9/GreyedDrafthorseBuckskin9.png", alt: "Buckskin Greyed Draft" },
+                { src: "9/LeopardAppaloosa9.png", alt: "Leopard Appaloosa" },
+                { src: "9/DappleGreyMorgan9.png", alt: "Dapple Grey Morgan" },
+                { src: "9/BayRussianHeavyDraft9.png", alt: "Bay Russian Heavy Draft" },
+            ],
+            "1:12": [
+                { src: "12/AppaloosaSportHorse12.png", alt: "Appaloosa Sport Horse" },
+                { src: "12/BlackHanoverian12.png", alt: "Black Hanoverian" },
+                { src: "12/BloodBayArabian12.png", alt: "Blood Bay Arabian" },
+                { src: "12/BuckskinQuarterhorse12.png", alt: "Buckskin Quarterhorse" },
+                { src: "12/ClevelandBay12.png", alt: "Cleveland Bay" },
+                { src: "12/DappleGreyMorgan12.png", alt: "Dapple Grey Morgan" },
+                { src: "12/DutchWarmbloodTobanio12.png", alt: "Tobanio Dutch Warmblood" },
+                { src: "12/GreyedDrafthorseBuckskin12.png", alt: "Buckskin Greyed Draft" },
+                { src: "12/LeopardAppaloosa12.png", alt: "Leopard Appaloosa" },
+                { src: "12/NezPerceAppaloosa12.png", alt: "Blanket Nez Perce" },
+                { src: "12/PalominoQuarterhorse12.png", alt: "Palomino Quarterhorse" },
+                { src: "12/RedBayTW12.png", alt: "Red Bay Tennessee Walking Horse" },
+            ],
+            "1:32": [
+                { src: "32/32Chestnutsockfacestandardwalking.png", alt: "Bay Trakehner" },
+                { src: "32/32baysockstandardstanding.png", alt: "Gypsy Vanner" },
+                { src: "32/32blackfacesocksdraftrearing.png", alt: "Irish Sporthorse" },
+                { src: "32/32dunfacesocksnowflakestandardrearing.png", alt: "Dun Snowflake Appaloosa" },
+                { src: "32/32greydapplestandardrunning.png", alt: "Dapple Grey Dutch Warmblood" },
+                { src: "32/AppaloosaSportHorse32.png", alt: "Appaloosa Sporthorse" },
+                { src: "32/BlackHanoverian32.png", alt: "Black Hanoverian" },
+                { src: "32/BloodBayArabian32.png", alt: "Blood Bay Arabian" },
+                { src: "32/BuckskinQuarterhorse32.png", alt: "Buckskin Quarterhorse" },
+                { src: "32/ClevelandBay32.png", alt: "Cleveland Bay" },
+                { src: "32/DappleGreyMorgan32.png", alt: "Dapple Grey Morgan" },
+                { src: "32/DutchWarmbloodTobanio32.png", alt: "Tobanio Dutch Warmblood" },
+                { src: "32/GreyedDrafthorseBuckskin32.png", alt: "Buckskin Greyed Draft" },
+                { src: "32/LeopardAppaloosa32.png", alt: "Leopard Appaloosa" },
+            ]
+        };
+
+        // Function to update the gallery based on the selected model type
         function updateGallery(scale) {
-          carousel.innerHTML = ''; // Clear existing images
+            carousel.innerHTML = ''; // Clear existing images
+            
+            // Add images to the carousel for the selected scale
+            galleries[scale].forEach((image) => {
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.alt = image.alt;
+                carousel.appendChild(img);
+            });
         
-          // Add images to the carousel
-          galleries[scale].forEach((image) => {
-            const img = document.createElement('img');
-            img.src = image.src;
-            img.alt = image.alt;
-            carousel.appendChild(img);
-          });
-        
-          // Clone the images to make the carousel seamless
-          galleries[scale].forEach((image) => {
-            const img = document.createElement('img');
-            img.src = image.src;
-            img.alt = image.alt;
-            carousel.appendChild(img.cloneNode());
-          });
+            // Clone the images to make the carousel scroll seamlessly
+            galleries[scale].forEach((image) => {
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.alt = image.alt;
+                carousel.appendChild(img.cloneNode());
+            });
         }
-        
-        // Initialize with the first scale
+
+        // Initialize with the first scale from the dropdown
         updateGallery(scaleSelect.value);
         
-        // Update gallery when scale changes
+        // Update gallery when the scale changes
         scaleSelect.addEventListener('change', (e) => {
-          updateGallery(e.target.value);
+            updateGallery(e.target.value);
         });
 
-        
+        // Animation reset logic for seamless scrolling
+        carousel.addEventListener('animationiteration', () => {
+            console.log('The first set of images completed a loop.');
+            // This event can trigger additional actions once the first set finishes its loop
+        });
+    }
+
         document.addEventListener("DOMContentLoaded", function () {
             const scaleSelect = document.getElementById("model-type");
             const coatMarkingsSelect = document.getElementById("coat-markings");
