@@ -39,6 +39,7 @@
             overflow: hidden;
             position: relative;
             background-color: #f4f4f4;
+	    padding: 5px 0;
         }
 
         .slider {
@@ -49,6 +50,8 @@
             overflow: hidden;
             position: relative;
             width: 960px;
+	    display: flex;
+	    align-items: center;
         }
 
         /* Gradient effect for slider sides */
@@ -74,16 +77,16 @@
 
         /* Slide track for infinite scroll */
         .slide-track {
-            animation: scroll 40s linear infinite;
-            display: flex;
-            width: max-content;
-        }
+	    display: flex;
+	    height: 100%; /* Ensure it doesn't overflow vertically */
+	    animation: scroll 40s linear infinite;
+	}
 
         .slide {
-            height: 100px;
-            width: 250px;
-            flex-shrink: 0;
-        }
+	    height: 100%;
+	    width: 250px;
+	    flex-shrink: 0;
+	}
 
         /* Smooth scrolling animation */
         @keyframes scroll {
