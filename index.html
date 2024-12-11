@@ -37,17 +37,17 @@
         }
 
         #gallery {
-          height: 25%; /* 2/8ths of the screen height */
+          height: 30%; /* This ensures the gallery section is 30% of the screen height */
           overflow: hidden;
           position: relative;
-          background-color: #f4f4f4; /* Just for visual distinction */
+          background-color: #f4f4f4; /* For visual distinction */
         }
         
         #carousel-container {
-          width: 100%; /* Full-width */
-          height: 100%; /* Full-height */
-          overflow: hidden; /* Hide overflowing images */
-          position: relative; /* For positioning the carousel */
+          width: 100%;
+          height: 100%; /* Full height of #gallery */
+          overflow: hidden;
+          position: relative;
         }
         
         #carousel {
@@ -55,16 +55,13 @@
           width: max-content; /* Expand to fit the images */
           animation: scroll-left 40s linear infinite; /* Smooth scrolling animation */
         }
-
-        #form-section {
-          height: 50%; /* 4/8ths of the screen height */
-          background-color: #e0e0e0; /* Just for visual distinction */
-        }
         
         #carousel img {
-          height: 95%; /* Make the images fill almost the vertical space */
-          flex-shrink: 0; /* Prevent images from shrinking */
-          margin: 0 5px; /* Add some spacing between images (optional) */
+          height: 100%; /* Make images scale to fill the height of the carousel container */
+          width: auto; /* Maintain aspect ratio */
+          object-fit: cover; /* Make sure images cover the container without distortion */
+          flex-shrink: 0; /* Prevent shrinking */
+          margin: 0 5px; /* Optional: space between images */
         }
         
         /* Animation keyframes */
@@ -75,6 +72,11 @@
           to {
             transform: translateX(-100%); /* Scroll left */
           }
+        }
+
+        #form-section {
+          height: 45%; /* 4/8ths of the screen height */
+          background-color: #e0e0e0; /* Just for visual distinction */
         }
         
         #form {
