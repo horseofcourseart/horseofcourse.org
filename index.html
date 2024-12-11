@@ -217,9 +217,12 @@
         
         function updateGallery(scale) {
           carousel.innerHTML = ''; // Clear existing images
-          galleries[scale].forEach(imgSrc => {
+        
+          // Iterate over the selected scale's gallery array
+          galleries[scale].forEach((image) => {
             const img = document.createElement('img');
-            img.src = imgSrc;
+            img.src = image.src; // Assign the correct src string
+            img.alt = image.alt; // Assign the alt text for better accessibility
             carousel.appendChild(img);
           });
         }
