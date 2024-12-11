@@ -39,7 +39,6 @@
             overflow: hidden;
             position: relative;
             background-color: #f4f4f4;
-	    padding: 5px 0;
         }
 
         .slider {
@@ -50,8 +49,6 @@
             overflow: hidden;
             position: relative;
             width: 960px;
-	    display: flex;
-	    align-items: center;
         }
 
         /* Gradient effect for slider sides */
@@ -77,16 +74,16 @@
 
         /* Slide track for infinite scroll */
         .slide-track {
-	    display: flex;
-	    height: 100%; /* Ensure it doesn't overflow vertically */
-	    animation: scroll 40s linear infinite;
-	}
+            animation: scroll 40s linear infinite;
+            display: flex;
+            width: max-content;
+        }
 
         .slide {
-	    height: 100%;
-	    width: 250px;
-	    flex-shrink: 0;
-	}
+            height: 100px;
+            width: 250px;
+            flex-shrink: 0;
+        }
 
         /* Smooth scrolling animation */
         @keyframes scroll {
@@ -252,19 +249,44 @@
 					{ src: "9/AppaloosaSportHorse9.png", alt: "Appaloosa Sporthorse" },
 					{ src: "9/BloodBayArabian9.png", alt: "Blood Bay Arabian" },
 					{ src: "9/BuckskinQuarterhorse9.png", alt: "Buckskin Quarterhorse" },
-					{ src: "9/ClevelandBay9.png", alt: "Cleveland Bay" }
+					{ src: "9/ClevelandBay9.png", alt: "Cleveland Bay" },
+					{ src: "9/DappleGreyDraftHorse9.png", alt: "Dapple Grey Draft" },
+					{ src: "9/DunWelshCob9.png", alt: "Dun Welsh Cob" },
+					{ src: "9/DutchWarmbloodTobanio9.png", alt: "Dutch Warmblood Tobanio" },
+					{ src: "9/GreyedDrafthorseBuckskin9.png", alt: "Buckskin Greyed Draft" },
+					{ src: "9/LeopardAppaloosa9.png", alt: "Leopard Appaloosa" },
+					{ src: "9/DappleGreyMorgan9.png", alt: "Dapple Grey Morgan" },
+					{ src: "9/BayRussianHeavyDraft9.png", alt: "Bay Russian Heavy Draft" }
 				],
 				"1:12": [
 					{ src: "12/AppaloosaSportHorse12.png", alt: "Appaloosa Sport Horse" },
 					{ src: "12/BlackHanoverian12.png", alt: "Black Hanoverian" },
 					{ src: "12/BloodBayArabian12.png", alt: "Blood Bay Arabian" },
-					{ src: "12/BuckskinQuarterhorse12.png", alt: "Buckskin Quarterhorse" }
+					{ src: "12/BuckskinQuarterhorse12.png", alt: "Buckskin Quarterhorse" },
+					{ src: "12/ClevelandBay12.png", alt: "Cleveland Bay" },
+					{ src: "12/DappleGreyMorgan12.png", alt: "Dapple Grey Morgan" },
+					{ src: "12/DutchWarmbloodTobanio12.png", alt: "Tobanio Dutch Warmblood" },
+					{ src: "12/GreyedDrafthorseBuckskin12.png", alt: "Buckskin Greyed Draft" },
+					{ src: "12/LeopardAppaloosa12.png", alt: "Leopard Appaloosa" },
+					{ src: "12/NezPerceAppaloosa12.png", alt: "Blanket Nez Perce" },
+					{ src: "12/PalominoQuarterhorse12.png", alt: "Palomino Quarterhorse" },
+					{ src: "12/RedBayTW12.png", alt: "Red Bay Tennessee Walking Horse" }
 				],
 				"1:32": [
 					{ src: "32/32Chestnutsockfacestandardwalking.png", alt: "Bay Trakehner" },
 					{ src: "32/32baysockstandardstanding.png", alt: "Gypsy Vanner" },
 					{ src: "32/32blackfacesocksdraftrearing.png", alt: "Irish Sporthorse" },
-					{ src: "32/32dunfacesocksnowflakestandardrearing.png", alt: "Dun Snowflake Appaloosa" }
+					{ src: "32/32dunfacesocksnowflakestandardrearing.png", alt: "Dun Snowflake Appaloosa" },
+					{ src: "32/32greydapplestandardrunning.png", alt: "Dapple Grey Dutch Warmblood" },
+					{ src: "32/AppaloosaSportHorse32.png", alt: "Appaloosa Sporthorse" },
+					{ src: "32/BlackHanoverian32.png", alt: "Black Hanoverian" },
+					{ src: "32/BloodBayArabian32.png", alt: "Blood Bay Arabian" },
+					{ src: "32/BuckskinQuarterhorse32.png", alt: "Buckskin Quarterhorse" },
+					{ src: "32/ClevelandBay32.png", alt: "Cleveland Bay" },
+					{ src: "32/DappleGreyMorgan32.png", alt: "Dapple Grey Morgan" },
+					{ src: "32/DutchWarmbloodTobanio32.png", alt: "Tobanio Dutch Warmblood" },
+					{ src: "32/GreyedDrafthorseBuckskin32.png", alt: "Buckskin Greyed Draft" },
+					{ src: "32/LeopardAppaloosa32.png", alt: "Leopard Appaloosa" }
 				]
 			};
 
@@ -284,18 +306,19 @@
 				});
 
 				// Duplicate images for seamless scrolling
-				galleries[scale].forEach(image => {
+				const duplicates = [...galleries[scale], ...galleries[scale]]; // Create continuous duplicate images
+				duplicates.forEach(image => {
 					const img = document.createElement("img");
 					img.src = image.src;
 					img.alt = image.alt;
 					img.style.height = "100%";
 					img.style.objectFit = "contain";
 					img.style.flexShrink = "0";
-					carousel.appendChild(img.cloneNode(true));
+					carousel.appendChild(img);
 				});
 
 				// Adjust track width for seamless scrolling
-				const totalImages = galleries[scale].length * 2;
+				const totalImages = duplicates.length;
 				carousel.style.width = `calc(250px * ${totalImages})`;
 			};
 
