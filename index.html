@@ -415,9 +415,7 @@
           updateGallery(scaleSelect.value);
       });
 
-
-
-      // Calculate and update total price and payment due
+            // Calculate and update total price and payment due
       const updateTotalPrice = () => {
       	const basePrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
       	const isSmallScale = scaleSelect.value === "1:32";
