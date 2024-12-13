@@ -136,9 +136,42 @@
         padding: 20px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
+
+      /* Loading Spinner Styles */
+      #loading-spinner {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          display: none;  /* Initially hidden */
+          justify-content: center;
+          align-items: center;
+          background: rgba(255, 255, 255, 0.8);
+          z-index: 9999;  /* Make sure it sits on top of everything */
+      }
+      
+      .spinner {
+          border: 4px solid #f3f3f3; /* Light gray */
+          border-top: 4px solid #3498db; /* Blue */
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+      }
     </style>
   </head>
   <body>
+    
+    <div id="loading-spinner" class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+    
     <div class="container">
       <header>
         <h1>Model Horse Sales</h1>
@@ -292,124 +325,89 @@
 
     <!-- JavaScript -->
    <script>
-// JavaScript
-document.addEventListener("DOMContentLoaded", function () {
-    const scaleSelect = document.getElementById("model-type");
-    const coatMarkingsSelect = document.getElementById("coat-markings");
-    const buildSelect = document.getElementById("build");
-    const poseSelect = document.getElementById("pose");
-    const accessoriesSelect = document.getElementById("accessories");
-    const totalPriceElement = document.getElementById("total-price");
-    const paymentDueElement = document.getElementById("payment-due");
-    const form = document.getElementById("order-form");
-    const carousel = document.getElementById("carousel");
-
-    let totalPrice = 0;
-    let paymentDue = 0;
-
-    const galleries = {
-        "1:9": [
-            { src: "9/AppaloosaSportHorse9.png", alt: "Appaloosa Sporthorse" },
-            { src: "9/BloodBayArabian9.png", alt: "Blood Bay Arabian" },
-            { src: "9/BuckskinQuarterhorse9.png", alt: "Buckskin Quarterhorse" },
-            { src: "9/ClevelandBay9.png", alt: "Cleveland Bay" },
-            { src: "9/DappleGreyDraftHorse9.png", alt: "Dapple Grey Draft" },
-            { src: "9/DunWelshCob9.png", alt: "Dun Welsh Cob" },
-            { src: "9/DutchWarmbloodTobanio9.png", alt: "Dutch Warmblood Tobanio" },
-            { src: "9/GreyedDrafthorseBuckskin9.png", alt: "Buckskin Greyed Draft" },
-            { src: "9/LeopardAppaloosa9.png", alt: "Leopard Appaloosa" },
-            { src: "9/DappleGreyMorgan9.png", alt: "Dapple Grey Morgan" },
-            { src: "9/BayRussianHeavyDraft9.png", alt: "Bay Russian Heavy Draft" }
-        ],
-        "1:12": [
-            { src: "12/AppaloosaSportHorse12.png", alt: "Appaloosa Sport Horse" },
-            { src: "12/BlackHanoverian12.png", alt: "Black Hanoverian" },
-            { src: "12/BloodBayArabian12.png", alt: "Blood Bay Arabian" },
-            { src: "12/BuckskinQuarterhorse12.png", alt: "Buckskin Quarterhorse" },
-            { src: "12/ClevelandBay12.png", alt: "Cleveland Bay" },
-            { src: "12/DappleGreyMorgan12.png", alt: "Dapple Grey Morgan" },
-            { src: "12/DutchWarmbloodTobanio12.png", alt: "Tobanio Dutch Warmblood" },
-            { src: "12/GreyedDrafthorseBuckskin12.png", alt: "Buckskin Greyed Draft" },
-            { src: "12/LeopardAppaloosa12.png", alt: "Leopard Appaloosa" },
-            { src: "12/NezPerceAppaloosa12.png", alt: "Blanket Nez Perce" },
-            { src: "12/PalominoQuarterhorse12.png", alt: "Palomino Quarterhorse" },
-            { src: "12/RedBayTW12.png", alt: "Red Bay Tennessee Walking Horse" }
-        ],
-        "1:32": [
-            { src: "32/32Chestnutsockfacestandardwalking.png", alt: "Bay Trakehner" },
-            { src: "32/32baysockstandardstanding.png", alt: "Gypsy Vanner" },
-            { src: "32/32blackfacesocksdraftrearing.png", alt: "Irish Sporthorse" },
-            { src: "32/32dunfacesocksnowflakestandardrearing.png", alt: "Dun Snowflake Appaloosa" },
-            { src: "32/32greydapplestandardrunning.png", alt: "Dapple Grey Dutch Warmblood" },
-            { src: "32/AppaloosaSportHorse32.png", alt: "Appaloosa Sporthorse" },
-            { src: "32/BlackHanoverian32.png", alt: "Black Hanoverian" },
-            { src: "32/BloodBayArabian32.png", alt: "Blood Bay Arabian" },
-            { src: "32/BuckskinQuarterhorse32.png", alt: "Buckskin Quarterhorse" },
-            { src: "32/ClevelandBay32.png", alt: "Cleveland Bay" },
-            { src: "32/DappleGreyMorgan32.png", alt: "Dapple Grey Morgan" },
-            { src: "32/DutchWarmbloodTobanio32.png", alt: "Tobanio Dutch Warmblood" },
-            { src: "32/GreyedDrafthorseBuckskin32.png", alt: "Buckskin Greyed Draft" },
-            { src: "32/LeopardAppaloosa32.png", alt: "Leopard Appaloosa" }
-        ]
-    };
-
-    // Update gallery images
-    const updateGallery = (scale) => {
-        carousel.innerHTML = ""; // Clear existing images
-
-        // Add new images
-        galleries[scale].forEach(image => {
-            const img = document.createElement("img");
-            img.src = image.src;
-            img.alt = image.alt;
-            img.style.height = "100%";
-            img.style.objectFit = "contain";
-            img.style.flexShrink = "0";
-            carousel.appendChild(img);
-        });
-
-        // Duplicate images for seamless scrolling
-        const duplicates = [...galleries[scale], ...galleries[scale]]; // Create continuous duplicate images
-        duplicates.forEach(image => {
-            const img = document.createElement("img");
-            img.src = image.src;
-            img.alt = image.alt;
-            img.style.height = "100%";
-            img.style.objectFit = "contain";
-            img.style.flexShrink = "0";
-            carousel.appendChild(img);
-        });
-
-        // Adjust track width for seamless scrolling
-        const totalImages = duplicates.length;
-        const scrollWidth = 250 * totalImages;
-        carousel.style.width = `${scrollWidth}px`;
-
-        // Dynamically adjust keyframe animation based on the number of images
-        const animationTime = totalImages * 5; // 5s per image for smooth animation
-        const styleSheet = document.styleSheets[0];
-        const keyframes = `
-            @keyframes scroll {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-${scrollWidth}px); }
+    // JavaScript
+    document.addEventListener("DOMContentLoaded", function () {
+        const scaleSelect = document.getElementById("model-type");
+        const carousel = document.getElementById("carousel");
+        const loadingSpinner = document.getElementById("loading-spinner");
+    
+        // Function to update gallery with the selected scale
+        const updateGallery = (scale) => {
+            loadingSpinner.style.display = "flex"; // Show loading spinner
+    
+            carousel.innerHTML = ""; // Clear existing images
+    
+            // Add new images based on the selected scale
+            galleries[scale].forEach(image => {
+                const img = document.createElement("img");
+                img.src = image.src;
+                img.alt = image.alt;
+                img.style.height = "100%";
+                img.style.objectFit = "contain";
+                img.style.flexShrink = "0";
+    
+                // Hide the spinner when the image is loaded
+                img.onload = () => {
+                    if (carousel.querySelectorAll("img").length === galleries[scale].length * 2) {
+                        loadingSpinner.style.display = "none"; // Hide the spinner
+                    }
+                };
+    
+                carousel.appendChild(img);
+            });
+    
+            // Duplicate images for seamless scrolling
+            const duplicates = [...galleries[scale], ...galleries[scale]];
+            duplicates.forEach(image => {
+                const img = document.createElement("img");
+                img.src = image.src;
+                img.alt = image.alt;
+                img.style.height = "100%";
+                img.style.objectFit = "contain";
+                img.style.flexShrink = "0";
+    
+                img.onload = () => {
+                    if (carousel.querySelectorAll("img").length === duplicates.length * 2) {
+                        loadingSpinner.style.display = "none"; // Hide the spinner
+                    }
+                };
+    
+                carousel.appendChild(img);
+            });
+    
+            // Adjust track width for seamless scrolling
+            const totalImages = duplicates.length;
+            const scrollWidth = 250 * totalImages;
+            carousel.style.width = `${scrollWidth}px`;
+    
+            // Dynamically adjust keyframe animation based on the number of images
+            const animationTime = totalImages * 15; // Slower scrolling speed (adjust as needed)
+            const styleSheet = document.styleSheets[0];
+            const keyframes = `
+                @keyframes scroll {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-${scrollWidth}px); }
+                }
+            `;
+    
+            // Remove existing keyframes (if any) and insert new one
+            const existingIndex = Array.from(styleSheet.cssRules).findIndex(rule => rule.name === "scroll");
+            if (existingIndex > -1) {
+                styleSheet.deleteRule(existingIndex);
             }
-        `;
-
-        // Remove existing keyframes (if any) and insert new one
-        const existingIndex = Array.from(styleSheet.cssRules).findIndex(rule => rule.name === "scroll");
-        if (existingIndex > -1) {
-            styleSheet.deleteRule(existingIndex);
-        }
-        styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
-
-        // Apply the animation
-        carousel.style.animation = `scroll ${animationTime}s linear infinite`;
-    };
-
-    // Event listener for model type change
-    scaleSelect.addEventListener("change", (e) => {
-        updateTotalPrice();
-        updateGallery(e.target.value);
+            styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+    
+            // Apply the animation to the carousel
+            carousel.style.animation = `scroll ${animationTime}s linear infinite`;
+        };
+    
+        // Event listener for model type change
+        scaleSelect.addEventListener("change", (e) => {
+            updateGallery(e.target.value);
+        });
+    
+        // Initialize the gallery on page load
+        updateGallery(scaleSelect.value);
     });
 
     // Calculate and update total price and payment due
