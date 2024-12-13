@@ -219,10 +219,11 @@
             <option value="Black" data-price="0">Black</option>
             <option value="Grey" data-price="0">Grey</option>
             <option value="White" data-price="0">White</option>
-            <option value="Palomino" data-price="0">Palomino</option>
-            <option value="Buckskin" data-price="0">Buckskin</option>
             <option value="Cream" data-price="0">Cream</option>
+            <option value="Perlino" data-price="0">Perlino</option>
+            <option value="Palomino" data-price="0">Palomino</option>
             <option value="Dun" data-price="0">Dun</option>
+            <option value="Buckskin" data-price="0">Buckskin</option>
           </select>
 
           <!-- Coat Markings -->
@@ -251,7 +252,7 @@
             <option value="Dapple" data-price="20">
               Dapple (+$20/+$10 for 1:32)
             </option>
-            <option value="Smoky" data-price="20">
+            <option value="Sooty" data-price="20">
               Smoky (+$20/+$10 for 1:32)
             </option>
           </select>
@@ -261,7 +262,6 @@
           <select id="build" name="build" required>
             <option value="Standard" data-price="0">Standard (Free)</option>
             <option value="Pony" data-price="0">Pony (Free)</option>
-            <option value="Mini" data-price="0">Mini (Free)</option>
             <option value="Draft" data-price="40">
               Draft (+$40/+$20 for 1:32)
             </option>
@@ -275,32 +275,18 @@
           <select id="pose" name="pose" required>
             <option value="Standing" data-price="0">Standing (Free)</option>
             <option value="Walking" data-price="0">Walking (Free)</option>
-            <option value="Running" data-price="20">
-              Running (+$20/+$10 for 1:32)
-            </option>
-            <option value="Special Gait" data-price="40">
-              Special Gait (+$40/+$20 for 1:32)
-            </option>
-            <option value="Jumping" data-price="40">
-              Jumping (+$40/+$20 for 1:32)
-            </option>
-            <option value="Rearing" data-price="40">
-              Rearing (+$40/+$20 for 1:32)
-            </option>
-            <option value="Dynamic" data-price="70">
-              Dynamic (+$70/+$35 for 1:32)
-            </option>
+            <option value="Trotting" data-price="0">Trotting (Free)</option>
+            <option value="Cantering" data-price="0">Cantering (Free)</option>
+            <option value="Galloping" data-price="0">Galloping (Free)</option>
+            <option value="Rearing" data-price="30">Rearing (+$30/+$15 for 1:32)</option>
           </select>
 
-          <!-- Accessories -->
-          <label for="accessories">Accessories:</label>
-          <select id="accessories" name="accessories" multiple>
-            <option value="Diorama" data-price="70">
-              Diorama (+$70/+35 for 1:32)
-            </option>
-            <option value="Tack" data-price="150">
-              Tack (+$150/+75 for 1:32)
-            </option>
+          <!-- Finish -->
+          <label for="finish">Finish:</label>
+          <select id="finish" name="finish" required>
+            <option value="matte" data-price="0">Matte</option>
+            <option value="satin-matte" data-price="0">Satin Matte</option>
+            <option value="glossy" data-price="15">Glossy (+$15/+$7.50 for 1:32)</option>
           </select>
 
           <!-- Notes Field -->
@@ -311,15 +297,17 @@
             rows="4"
             cols="50"
             placeholder="Enter any additional notes here"
-          ></textarea
-          ><br /><br />
+          ></textarea><br /><br />
+
+          <!-- Shipping Type -->
+          <label for="international-shipping">International Shipping:</label>
+          <input type="checkbox" id="international-shipping" name="international-shipping" />
         </form>
       </section>
 
       <!-- Footer Section -->
       <footer>
         <h3>Total Price: <span id="total-price">$300.00</span></h3>
-        <h3>Payment Due: <span id="payment-due">$150.00</span></h3>
 
         <!-- PayPal Button -->
         <div class="paypal-button-container">
@@ -333,18 +321,20 @@
 // JavaScript
 document.addEventListener("DOMContentLoaded", function () {
     const scaleSelect = document.getElementById("model-type");
-    const coatMarkingsSelect = document.getElementById("coat-markings");
     const buildSelect = document.getElementById("build");
     const poseSelect = document.getElementById("pose");
+    const coatMarkingsSelect = document.getElementById("coat-markings");
     const accessoriesSelect = document.getElementById("accessories");
     const totalPriceElement = document.getElementById("total-price");
-    const paymentDueElement = document.getElementById("payment-due");
+    const internationalShippingCheckbox = document.getElementById('international-shipping');
     const form = document.getElementById("order-form");
     const carousel = document.getElementById("carousel");
     const loadingSpinner = document.getElementById("loading-spinner");
 
     let totalPrice = 0;
-    let paymentDue = 0;
+
+    const US_CANADA_SHIPPING_COST = 25;
+    const INTERNATIONAL_SHIPPING_COST = 45;
 
     const galleries = {
         "1:9": [
@@ -461,6 +451,21 @@ document.addEventListener("DOMContentLoaded", function () {
           };
       });
   };
+
+  // Function to calculate shipping cost based on the checkbox
+    const calculateShippingCost = () => {
+        return internationalShippingCheckbox.checked ? INTERNATIONAL_SHIPPING_COST : US_CANADA_SHIPPING_COST;
+    };
+
+  // Helper function to calculate add-on prices
+    const calculateAddOnPrice = (selectElement) => {
+        const isSmallScale = scaleSelect.value === '1:32';
+        return Array.from(selectElement.selectedOptions).reduce((sum, option) => {
+            const addonPrice = parseInt(option.dataset.price) || 0;
+            // Apply 1:32 scale price adjustment if the scale is 1:32
+            return sum + (isSmallScale ? addonPrice / 2 : addonPrice);
+        }, 0);
+    };
   
     // Event listener for model type change
     scaleSelect.addEventListener("change", (e) => {
@@ -471,33 +476,31 @@ document.addEventListener("DOMContentLoaded", function () {
     // Calculate and update total price and payment due
     const updateTotalPrice = () => {
         const basePrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
-        const isSmallScale = scaleSelect.value === "1:32";
-
-        // Helper function to calculate add-ons
-        const calculateAddOnPrice = (selectElement) => {
-            return Array.from(selectElement.selectedOptions).reduce((sum, option) => {
-                const addonPrice = parseInt(option.dataset.price) || 0;
-                return sum + (isSmallScale ? addonPrice / 2 : addonPrice);
-            }, 0);
-        };
+        const isSmallScale = scaleSelect.value === '1:32';
 
         const buildPrice = parseInt(buildSelect.options[buildSelect.selectedIndex].dataset.price) || 0;
         const posePrice = parseInt(poseSelect.options[poseSelect.selectedIndex].dataset.price) || 0;
+        const finishPrice = parseInt(finishSelect.options[finishSelect.selectedIndex].dataset.price) || 0;
 
+        // Calculate total price from base model, add-ons, build, and pose
         totalPrice = basePrice
             + calculateAddOnPrice(coatMarkingsSelect)
-            + calculateAddOnPrice(accessoriesSelect)
             + (isSmallScale ? buildPrice / 2 : buildPrice)
-            + (isSmallScale ? posePrice / 2 : posePrice);
+            + (isSmallScale ? posePrice / 2 : posePrice)
+            + finishPrice;
 
-        paymentDue = totalPrice / 2;
+        // Add shipping cost
+        totalPrice += calculateShippingCost();
 
-        // Update UI
+        // Update the payment due (total price to be paid in full)
+        paymentDue = totalPrice;
+
+        // Update UI with the new total price
         totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`;
         paymentDueElement.textContent = `$${paymentDue.toFixed(2)}`;
     };
 
-    // Render PayPal button
+    // Render PayPal button with updated payment due
     const renderPayPalButton = () => {
         paypal.Buttons({
             createOrder: (data, actions) => {
@@ -526,7 +529,7 @@ document.addEventListener("DOMContentLoaded", function () {
             coatMarkings: Array.from(form['coat-markings'].selectedOptions).map(option => option.value),
             build: form['build'].value,
             pose: form['pose'].value,
-            accessories: Array.from(form['accessories'].selectedOptions).map(option => option.value),
+            finish: form['finish'].value,
             notes: form.notes.value,
             transactionId: details.id,
             totalPrice: totalPrice.toFixed(2),
@@ -555,14 +558,13 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Event listeners to update total price and gallery
-    const inputsToUpdate = [coatMarkingsSelect, buildSelect, poseSelect, accessoriesSelect];
+    const inputsToUpdate = [scaleSelect, coatColorSelect, coatMarkingsSelect, buildSelect, poseSelect, finishSelect, internationalShippingCheckbox];
     inputsToUpdate.forEach(input => input.addEventListener("change", updateTotalPrice));
 
     // Initialize PayPal button, price, and gallery on load
     renderPayPalButton();
     updateTotalPrice();
-    updateGallery(scaleSelect.value);
-}); // Fixed closing bracket added here
+});
 </script>
 
   </body>
