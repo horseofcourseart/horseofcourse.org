@@ -370,7 +370,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const showStep = (index) => {
         steps.forEach((step, i) => step.classList.toggle("active", i === index));
-        if (index === steps.length - 1) updateSummary();
+        if (index === steps.length - 1) {
+            updateSummary();
+            renderPayPalButton(); // Render the PayPal button on the final step
+        }
     };
 
     const updateSummary = () => {
@@ -386,10 +389,9 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
     };
 
-    // Update gallery images
     const updateGallery = (scale) => {
         loadingSpinner.classList.add("show");
-        carousel.innerHTML = ""; // Clear existing images
+        carousel.innerHTML = "";
 
         galleries[scale].forEach(image => {
             const img = document.createElement("img");
@@ -444,6 +446,54 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             };
         });
+    };
+
+    const renderPayPalButton = () => {
+        paypalContainer.innerHTML = ""; // Clear any existing buttons
+        paypal.Buttons({
+            createOrder: (data, actions) => {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: { value: totalPrice.toFixed(2) }
+                    }]
+                });
+            },
+            onApprove: (data, actions) => {
+                return actions.order.capture().then((details) => {
+                    alert(`Transaction completed by ${details.payer.name.given_name}`);
+                    submitOrder(details);
+                });
+            }
+        }).render("#paypal-button-container");
+    };
+
+    const submitOrder = (details) => {
+        const formData = {
+            email: form.email.value,
+            phone: form.phone.value,
+            scale: form['model-type'].value,
+            coatColor: form['coat-color'].value,
+            coatMarkings: Array.from(form['coat-markings'].selectedOptions).map(option => option.value),
+            build: form['build'].value,
+            pose: form['pose'].value,
+            finish: form['finish'].value,
+            notes: form.notes.value,
+            transactionId: details.id,
+            totalPrice: totalPrice.toFixed(2),
+            payerName: details.payer.name.given_name,
+            payerEmail: details.payer.email_address,
+            paymentCompleted: details.purchase_units[0].payments.captures[0].amount.value
+        };
+
+        fetch("https://formspree.io/f/myzyapwz", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Failed to submit the order.");
+        })
+        .catch(error => alert("Error submitting order. Please try again."));
     };
 
     document.querySelectorAll(".next-step").forEach(btn => btn.addEventListener("click", () => showStep(++currentStep)));
