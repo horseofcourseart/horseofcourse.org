@@ -474,7 +474,7 @@ document.addEventListener("DOMContentLoaded", function () {
         updateGallery(e.target.value);
     });
 
-    // Calculate and update total price and payment due
+    // Calculate and update total price
     const updateTotalPrice = () => {
         const basePrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
         const isSmallScale = scaleSelect.value === '1:32';
@@ -493,21 +493,17 @@ document.addEventListener("DOMContentLoaded", function () {
         // Add shipping cost
         totalPrice += calculateShippingCost();
 
-        // Update the payment due (total price to be paid in full)
-        paymentDue = totalPrice;
-
         // Update UI with the new total price
         totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`;
-        paymentDueElement.textContent = `$${paymentDue.toFixed(2)}`;
     };
 
-    // Render PayPal button with updated payment due
+    // Render PayPal button with updated total price
     const renderPayPalButton = () => {
         paypal.Buttons({
             createOrder: (data, actions) => {
                 return actions.order.create({
                     purchase_units: [{
-                        amount: { value: paymentDue.toFixed(2) }
+                        amount: { value: totalPrice.toFixed(2) }
                     }]
                 });
             },
@@ -534,7 +530,6 @@ document.addEventListener("DOMContentLoaded", function () {
             notes: form.notes.value,
             transactionId: details.id,
             totalPrice: totalPrice.toFixed(2),
-            paymentDue: paymentDue.toFixed(2),
             payerName: details.payer.name.given_name,
             payerEmail: details.payer.email_address,
             paymentCompleted: details.purchase_units[0].payments.captures[0].amount.value
