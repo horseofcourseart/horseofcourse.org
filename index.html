@@ -1,455 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Horse Customization & Payment</title>
-    
+
     <!-- PayPal SDK Script -->
-    <script src="https://www.paypal.com/sdk/js?client-id=AQXLoLhl6HRzfms4Et1kRH3N5OiJEj8jOITyVkFWLWQjEBXtAiSylPyBdBpdyaXHhArpUMs_kNhxBiU2&components=buttons&currency=USD" 
-            data-uid-auto="uid_ksublauiclrthamiscicadnssisvro"></script>
-    
+    <script
+      src="https://www.paypal.com/sdk/js?client-id=AQXLoLhl6HRzfms4Et1kRH3N5OiJEj8jOITyVkFWLWQjEBXtAiSylPyBdBpdyaXHhArpUMs_kNhxBiU2&components=buttons&currency=USD"
+      data-uid-auto="uid_ksublauiclrthamiscicadnssisvro"
+    ></script>
+
     <style>
-        /* Basic Reset */
-        html, body {
-            height: 100vh;
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
+      /* Basic Reset */
+      html,
+      body {
+        height: 100vh;
+        margin: 0;
+        font-family: "Roboto", sans-serif;
+      }
+
+      /* Flexbox container for layout */
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+      }
+
+      /* Header and Footer Styling */
+      header,
+      footer {
+        text-align: center;
+        background-color: #ffffff;
+        height: 12.5vh;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Gallery Section Styling */
+      #gallery {
+        height: 30vh; /* Adjust as needed */
+        overflow: hidden;
+        position: relative;
+        background-color: #f4f4f4;
+        padding: 5px 0; /* Add padding between slider and gallery edges */
+        display: flex;
+        justify-content: center; /* Center the slider horizontally */
+        align-items: center; /* Center the slider vertically */
+      }
+
+      .slider {
+        height: 100%; /* Fully fill the height of the gallery minus padding */
+        width: 100%; /* Fully fill the width of the gallery */
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: center; /* Center content horizontally */
+        align-items: center; /* Center content vertically */
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.125);
+        background: white;
+      }
+
+      /* Gradient effect for slider sides */
+      .slider::before,
+      .slider::after {
+        content: "";
+        height: 100%;
+        position: absolute;
+        width: 20vh;
+        z-index: 2;
+        background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(255, 255, 255, 0) 100%
+        );
+      }
+
+      .slider::after {
+        right: 0;
+        top: 0;
+        transform: rotateZ(180deg);
+      }
+
+      .slider::before {
+        left: 0;
+        top: 0;
+      }
+
+      /* Slide track for infinite scroll */
+      .slide-track {
+        display: flex;
+        height: 100%; /* Match the height of the slider */
+        align-items: center; /* Ensure slides are vertically centered */
+        animation: scroll var(--scroll-duration) linear infinite; /* Dynamic duration */
+      }
+
+      .slide {
+        height: 100%; /* Ensure slides fully fill the height of the slider */
+        width: 30vw; /* Set the width for consistent sizing */
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center; /* Center image horizontally */
+        align-items: center; /* Center image vertically */
+      }
+
+      /* Smooth scrolling animation */
+      @keyframes scroll {
+        0% {
+          transform: translateX(0);
         }
-
-        /* Flexbox container for layout */
-        .container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            width: 100%;
+        100% {
+          transform: translateX(-100%);
         }
+      }
 
-        /* Header and Footer Styling */
-        header, footer {
-            text-align: center;
-            background-color: #ffffff;
-            height: 12.5vh;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+      /* Style for images in the carousel */
+      .slider img {
+        height: 100%; /* Ensure image fills the slide height */
+        width: auto; /* Maintain aspect ratio */
+        flex-shrink: 0;
+        object-fit: contain;
+        margin: 0 5px;
+      }
 
-        /* Gallery Section Styling */
-        #gallery {
-			height: 30vh; /* Adjust as needed */
-			overflow: hidden;
-			position: relative;
-			background-color: #f4f4f4;
-			padding: 5px 0; /* Add padding between slider and gallery edges */
-			display: flex;
-			justify-content: center; /* Center the slider horizontally */
-			align-items: center; /* Center the slider vertically */
-		}
+      /* Form Section Styling */
+      #form-section {
+        height: 45%;
+        background-color: #e0e0e0;
+      }
 
-        .slider {
-			height: 100%; /* Fully fill the height of the gallery minus padding */
-			width: 100%; /* Fully fill the width of the gallery */
-			position: relative;
-			overflow: hidden;
-			display: flex;
-			justify-content: center; /* Center content horizontally */
-			align-items: center; /* Center content vertically */
-			box-shadow: 0 10px 20px -5px rgba(0, 0, 0, .125);
-			background: white;
-		}
-
-        /* Gradient effect for slider sides */
-        .slider::before, .slider::after {
-            content: "";
-            height: 100%;
-            position: absolute;
-            width: 20vh;
-            z-index: 2;
-            background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-        }
-
-        .slider::after {
-            right: 0;
-            top: 0;
-            transform: rotateZ(180deg);
-        }
-
-        .slider::before {
-            left: 0;
-            top: 0;
-        }
-
-        /* Slide track for infinite scroll */
-        .slide-track {
-			display: flex;
-			height: 100%; /* Match the height of the slider */
-			align-items: center; /* Ensure slides are vertically centered */
-			animation: scroll 40s linear infinite;
-		}
-
-        .slide {
-			height: 100%; /* Ensure slides fully fill the height of the slider */
-			width: 30vw; /* Set the width for consistent sizing */
-			flex-shrink: 0;
-			display: flex;
-			justify-content: center; /* Center image horizontally */
-			align-items: center; /* Center image vertically */
-		}
-
-        /* Smooth scrolling animation */
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-250px * 7)); }
-        }
-
-        /* Style for images in the carousel */
-        .slider img {
-            height: 100%; /* Ensure image fills the slide height */
-			width: auto; /* Maintain aspect ratio */
-			flex-shrink: 0;
-			object-fit: contain;
-            margin: 0 5px;
-        }
-
-        /* Form Section Styling */
-        #form-section {
-            height: 45%;
-            background-color: #e0e0e0;
-        }
-
-        /* Form styling */
-        #form {
-            background-color: #ffffff;
-            overflow-y: auto;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+      /* Form styling */
+      #form {
+        background-color: #ffffff;
+        overflow-y: auto;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <h1>Model Horse Sales</h1>
-        </header>
-    
-        <!-- Gallery Section -->
-        <section id="gallery">
-            <div class="slider">
-                <div class="slide-track" id="carousel">
-                    <!-- Images will be inserted dynamically here based on model-type selection -->
-                </div>
-            </div>
-        </section>
-    
-        <!-- Form Section -->
-        <section id="form-section">
-            <form id="order-form">
-                <!-- Email Field -->
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required><br><br>
-            
-                <!-- Phone Number Field -->
-                <label for="phone">Phone Number:</label>
-                <input type="tel" id="phone" name="phone" required><br><br>
-                
-                <!-- Model Type -->
-                <label for="model-type">Model Type:</label>
-                <select id="model-type" name="model-type" required>
-                    <option value="1:32" data-price="50">1:32 ($50)</option>
-                    <option value="1:12" data-price="150">1:12 ($150)</option>
-                    <option value="1:9" data-price="300">1:9 ($300)</option>
-                </select>
-        
-                <!-- Coat Color -->
-                <label for="coat-color">Coat Color:</label>
-                <select id="coat-color" name="coat-color" required>
-                    <option value="Bay" data-price="0">Bay</option>
-                    <option value="Chestnut" data-price="0">Chestnut</option>
-                    <option value="Seal" data-price="0">Seal</option>
-                    <option value="Black" data-price="0">Black</option>
-                    <option value="Grey" data-price="0">Grey</option>
-                    <option value="White" data-price="0">White</option>
-                    <option value="Palomino" data-price="0">Palomino</option>
-                    <option value="Buckskin" data-price="0">Buckskin</option>
-                    <option value="Cream" data-price="0">Cream</option>
-                    <option value="Dun" data-price="0">Dun</option>
-                </select>
-        
-                <!-- Coat Markings -->
-                <label for="coat-markings">Coat Markings:</label>
-                <select id="coat-markings" name="coat-markings" multiple>
-                    <option value="Socks" data-price="0">Socks (Free)</option>
-                    <option value="Face" data-price="0">Face (Free)</option>
-                    <option value="Pinto" data-price="20">Pinto (+$20/+$10 for 1:32)</option>
-                    <option value="Robicano" data-price="20">Robicano (+$20/+$10 for 1:32)</option>
-                    <option value="Roan" data-price="20">Roan (+$20/+$10 for 1:32)</option>
-                    <option value="Blanket" data-price="20">Blanket (+$20/+$10 for 1:32)</option>
-                    <option value="Leopard" data-price="20">Leopard (+$20/+$10 for 1:32)</option>
-                    <option value="Snowflake" data-price="20">Snowflake (+$20/+$10 for 1:32)</option>
-                    <option value="Dapple" data-price="20">Dapple (+$20/+$10 for 1:32)</option>
-                    <option value="Smoky" data-price="20">Smoky (+$20/+$10 for 1:32)</option>
-                </select>
-        
-                <!-- Build -->
-                <label for="build">Build:</label>
-                <select id="build" name="build" required>
-                    <option value="Standard" data-price="0">Standard (Free)</option>
-                    <option value="Pony" data-price="0">Pony (Free)</option>
-                    <option value="Mini" data-price="0">Mini (Free)</option>
-                    <option value="Draft" data-price="40">Draft (+$40/+$20 for 1:32)</option>
-                    <option value="Specific Breed" data-price="70">Specific Breed (+$70/+$35 for 1:32)</option>
-                </select>
-        
-                <!-- Pose -->
-                <label for="pose">Pose:</label>
-                <select id="pose" name="pose" required>
-                    <option value="Standing" data-price="0">Standing (Free)</option>
-                    <option value="Walking" data-price="0">Walking (Free)</option>
-                    <option value="Running" data-price="20">Running (+$20/+$10 for 1:32)</option>
-                    <option value="Special Gait" data-price="40">Special Gait (+$40/+$20 for 1:32)</option>
-                    <option value="Jumping" data-price="40">Jumping (+$40/+$20 for 1:32)</option>
-                    <option value="Rearing" data-price="40">Rearing (+$40/+$20 for 1:32)</option>
-                    <option value="Dynamic" data-price="70">Dynamic (+$70/+$35 for 1:32)</option>
-                </select>
-        
-                <!-- Accessories -->
-                <label for="accessories">Accessories:</label>
-                <select id="accessories" name="accessories" multiple>
-                    <option value="Diorama" data-price="70">Diorama (+$70/+35 for 1:32)</option>
-                    <option value="Tack" data-price="150">Tack (+$150/+75 for 1:32)</option>
-                </select>
-    
-                <!-- Notes Field -->
-                <label for="notes">Notes:</label>
-                <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Enter any additional notes here"></textarea><br><br>
-            </form>
-        </section>
+      <header>
+        <h1>Model Horse Sales</h1>
+      </header>
 
-        <!-- Footer Section -->
-        <footer>
-            <h3>Total Price: <span id="total-price">$300.00</span></h3>
-            <h3>Payment Due: <span id="payment-due">$150.00</span></h3>
-            
-            <!-- PayPal Button -->
-            <div class="paypal-button-container">
-                <div id="paypal-button-container"></div>
-            </div>
-        </footer>
+      <!-- Gallery Section -->
+      <section id="gallery">
+        <div class="slider">
+          <div class="slide-track" id="carousel">
+            <!-- Images will be inserted dynamically here based on model-type selection -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Form Section -->
+      <section id="form-section">
+        <form id="order-form">
+          <!-- Email Field -->
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required /><br /><br />
+
+          <!-- Phone Number Field -->
+          <label for="phone">Phone Number:</label>
+          <input type="tel" id="phone" name="phone" required /><br /><br />
+
+          <!-- Model Type -->
+          <label for="model-type">Model Type:</label>
+          <select id="model-type" name="model-type" required>
+            <option value="1:32" data-price="50">1:32 ($50)</option>
+            <option value="1:12" data-price="150">1:12 ($150)</option>
+            <option value="1:9" data-price="300">1:9 ($300)</option>
+          </select>
+
+          <!-- Coat Color -->
+          <label for="coat-color">Coat Color:</label>
+          <select id="coat-color" name="coat-color" required>
+            <option value="Bay" data-price="0">Bay</option>
+            <option value="Chestnut" data-price="0">Chestnut</option>
+            <option value="Seal" data-price="0">Seal</option>
+            <option value="Black" data-price="0">Black</option>
+            <option value="Grey" data-price="0">Grey</option>
+            <option value="White" data-price="0">White</option>
+            <option value="Palomino" data-price="0">Palomino</option>
+            <option value="Buckskin" data-price="0">Buckskin</option>
+            <option value="Cream" data-price="0">Cream</option>
+            <option value="Dun" data-price="0">Dun</option>
+          </select>
+
+          <!-- Coat Markings -->
+          <label for="coat-markings">Coat Markings:</label>
+          <select id="coat-markings" name="coat-markings" multiple>
+            <option value="Socks" data-price="0">Socks (Free)</option>
+            <option value="Face" data-price="0">Face (Free)</option>
+            <option value="Pinto" data-price="20">
+              Pinto (+$20/+$10 for 1:32)
+            </option>
+            <option value="Robicano" data-price="20">
+              Robicano (+$20/+$10 for 1:32)
+            </option>
+            <option value="Roan" data-price="20">
+              Roan (+$20/+$10 for 1:32)
+            </option>
+            <option value="Blanket" data-price="20">
+              Blanket (+$20/+$10 for 1:32)
+            </option>
+            <option value="Leopard" data-price="20">
+              Leopard (+$20/+$10 for 1:32)
+            </option>
+            <option value="Snowflake" data-price="20">
+              Snowflake (+$20/+$10 for 1:32)
+            </option>
+            <option value="Dapple" data-price="20">
+              Dapple (+$20/+$10 for 1:32)
+            </option>
+            <option value="Smoky" data-price="20">
+              Smoky (+$20/+$10 for 1:32)
+            </option>
+          </select>
+
+          <!-- Build -->
+          <label for="build">Build:</label>
+          <select id="build" name="build" required>
+            <option value="Standard" data-price="0">Standard (Free)</option>
+            <option value="Pony" data-price="0">Pony (Free)</option>
+            <option value="Mini" data-price="0">Mini (Free)</option>
+            <option value="Draft" data-price="40">
+              Draft (+$40/+$20 for 1:32)
+            </option>
+            <option value="Specific Breed" data-price="70">
+              Specific Breed (+$70/+$35 for 1:32)
+            </option>
+          </select>
+
+          <!-- Pose -->
+          <label for="pose">Pose:</label>
+          <select id="pose" name="pose" required>
+            <option value="Standing" data-price="0">Standing (Free)</option>
+            <option value="Walking" data-price="0">Walking (Free)</option>
+            <option value="Running" data-price="20">
+              Running (+$20/+$10 for 1:32)
+            </option>
+            <option value="Special Gait" data-price="40">
+              Special Gait (+$40/+$20 for 1:32)
+            </option>
+            <option value="Jumping" data-price="40">
+              Jumping (+$40/+$20 for 1:32)
+            </option>
+            <option value="Rearing" data-price="40">
+              Rearing (+$40/+$20 for 1:32)
+            </option>
+            <option value="Dynamic" data-price="70">
+              Dynamic (+$70/+$35 for 1:32)
+            </option>
+          </select>
+
+          <!-- Accessories -->
+          <label for="accessories">Accessories:</label>
+          <select id="accessories" name="accessories" multiple>
+            <option value="Diorama" data-price="70">
+              Diorama (+$70/+35 for 1:32)
+            </option>
+            <option value="Tack" data-price="150">
+              Tack (+$150/+75 for 1:32)
+            </option>
+          </select>
+
+          <!-- Notes Field -->
+          <label for="notes">Notes:</label>
+          <textarea
+            id="notes"
+            name="notes"
+            rows="4"
+            cols="50"
+            placeholder="Enter any additional notes here"
+          ></textarea
+          ><br /><br />
+        </form>
+      </section>
+
+      <!-- Footer Section -->
+      <footer>
+        <h3>Total Price: <span id="total-price">$300.00</span></h3>
+        <h3>Payment Due: <span id="payment-due">$150.00</span></h3>
+
+        <!-- PayPal Button -->
+        <div class="paypal-button-container">
+          <div id="paypal-button-container"></div>
+        </div>
+      </footer>
     </div>
 
     <!-- JavaScript -->
     <script>
-		// JavaScript
+      	// JavaScript
+      document.addEventListener("DOMContentLoaded", function () {
+          const scaleSelect = document.getElementById("model-type");
+          const coatMarkingsSelect = document.getElementById("coat-markings");
+          const buildSelect = document.getElementById("build");
+          const poseSelect = document.getElementById("pose");
+          const accessoriesSelect = document.getElementById("accessories");
+          const totalPriceElement = document.getElementById("total-price");
+          const paymentDueElement = document.getElementById("payment-due");
+          const form = document.getElementById("order-form");
+          const carousel = document.getElementById("carousel");
 
-		document.addEventListener("DOMContentLoaded", function () {
-			const scaleSelect = document.getElementById("model-type");
-			const coatMarkingsSelect = document.getElementById("coat-markings");
-			const buildSelect = document.getElementById("build");
-			const poseSelect = document.getElementById("pose");
-			const accessoriesSelect = document.getElementById("accessories");
-			const totalPriceElement = document.getElementById("total-price");
-			const paymentDueElement = document.getElementById("payment-due");
-			const form = document.getElementById("order-form");
-			const carousel = document.getElementById("carousel");
+          let totalPrice = 0;
+          let paymentDue = 0;
 
-			let totalPrice = 0;
-			let paymentDue = 0;
+          const galleries = {
+              "1:9": [
+                  { src: "9/AppaloosaSportHorse9.png", alt: "Appaloosa Sporthorse" },
+                  { src: "9/BloodBayArabian9.png", alt: "Blood Bay Arabian" },
+                  { src: "9/BuckskinQuarterhorse9.png", alt: "Buckskin Quarterhorse" },
+                  { src: "9/ClevelandBay9.png", alt: "Cleveland Bay" },
+                  { src: "9/DappleGreyDraftHorse9.png", alt: "Dapple Grey Draft" },
+                  { src: "9/DunWelshCob9.png", alt: "Dun Welsh Cob" },
+                  { src: "9/DutchWarmbloodTobanio9.png", alt: "Dutch Warmblood Tobanio" },
+                  { src: "9/GreyedDrafthorseBuckskin9.png", alt: "Buckskin Greyed Draft" },
+                  { src: "9/LeopardAppaloosa9.png", alt: "Leopard Appaloosa" },
+                  { src: "9/DappleGreyMorgan9.png", alt: "Dapple Grey Morgan" },
+                  { src: "9/BayRussianHeavyDraft9.png", alt: "Bay Russian Heavy Draft" }
+              ],
+              "1:12": [
+                  { src: "12/AppaloosaSportHorse12.png", alt: "Appaloosa Sport Horse" },
+                  { src: "12/BlackHanoverian12.png", alt: "Black Hanoverian" },
+                  { src: "12/BloodBayArabian12.png", alt: "Blood Bay Arabian" },
+                  { src: "12/BuckskinQuarterhorse12.png", alt: "Buckskin Quarterhorse" },
+                  { src: "12/ClevelandBay12.png", alt: "Cleveland Bay" },
+                  { src: "12/DappleGreyMorgan12.png", alt: "Dapple Grey Morgan" },
+                  { src: "12/DutchWarmbloodTobanio12.png", alt: "Tobanio Dutch Warmblood" },
+                  { src: "12/GreyedDrafthorseBuckskin12.png", alt: "Buckskin Greyed Draft" },
+                  { src: "12/LeopardAppaloosa12.png", alt: "Leopard Appaloosa" },
+                  { src: "12/NezPerceAppaloosa12.png", alt: "Blanket Nez Perce" },
+                  { src: "12/PalominoQuarterhorse12.png", alt: "Palomino Quarterhorse" },
+                  { src: "12/RedBayTW12.png", alt: "Red Bay Tennessee Walking Horse" }
+              ],
+              "1:32": [
+                  { src: "32/32Chestnutsockfacestandardwalking.png", alt: "Bay Trakehner" },
+                  { src: "32/32baysockstandardstanding.png", alt: "Gypsy Vanner" },
+                  { src: "32/32blackfacesocksdraftrearing.png", alt: "Irish Sporthorse" },
+                  { src: "32/32dunfacesocksnowflakestandardrearing.png", alt: "Dun Snowflake Appaloosa" },
+                  { src: "32/32greydapplestandardrunning.png", alt: "Dapple Grey Dutch Warmblood" },
+                  { src: "32/AppaloosaSportHorse32.png", alt: "Appaloosa Sporthorse" },
+                  { src: "32/BlackHanoverian32.png", alt: "Black Hanoverian" },
+                  { src: "32/BloodBayArabian32.png", alt: "Blood Bay Arabian" },
+                  { src: "32/BuckskinQuarterhorse32.png", alt: "Buckskin Quarterhorse" },
+                  { src: "32/ClevelandBay32.png", alt: "Cleveland Bay" },
+                  { src: "32/DappleGreyMorgan32.png", alt: "Dapple Grey Morgan" },
+                  { src: "32/DutchWarmbloodTobanio32.png", alt: "Tobanio Dutch Warmblood" },
+                  { src: "32/GreyedDrafthorseBuckskin32.png", alt: "Buckskin Greyed Draft" },
+                  { src: "32/LeopardAppaloosa32.png", alt: "Leopard Appaloosa" }
+              ]
+          };
 
-			const galleries = {
-				"1:9": [
-					{ src: "9/AppaloosaSportHorse9.png", alt: "Appaloosa Sporthorse" },
-					{ src: "9/BloodBayArabian9.png", alt: "Blood Bay Arabian" },
-					{ src: "9/BuckskinQuarterhorse9.png", alt: "Buckskin Quarterhorse" },
-					{ src: "9/ClevelandBay9.png", alt: "Cleveland Bay" },
-					{ src: "9/DappleGreyDraftHorse9.png", alt: "Dapple Grey Draft" },
-					{ src: "9/DunWelshCob9.png", alt: "Dun Welsh Cob" },
-					{ src: "9/DutchWarmbloodTobanio9.png", alt: "Dutch Warmblood Tobanio" },
-					{ src: "9/GreyedDrafthorseBuckskin9.png", alt: "Buckskin Greyed Draft" },
-					{ src: "9/LeopardAppaloosa9.png", alt: "Leopard Appaloosa" },
-					{ src: "9/DappleGreyMorgan9.png", alt: "Dapple Grey Morgan" },
-					{ src: "9/BayRussianHeavyDraft9.png", alt: "Bay Russian Heavy Draft" }
-				],
-				"1:12": [
-					{ src: "12/AppaloosaSportHorse12.png", alt: "Appaloosa Sport Horse" },
-					{ src: "12/BlackHanoverian12.png", alt: "Black Hanoverian" },
-					{ src: "12/BloodBayArabian12.png", alt: "Blood Bay Arabian" },
-					{ src: "12/BuckskinQuarterhorse12.png", alt: "Buckskin Quarterhorse" },
-					{ src: "12/ClevelandBay12.png", alt: "Cleveland Bay" },
-					{ src: "12/DappleGreyMorgan12.png", alt: "Dapple Grey Morgan" },
-					{ src: "12/DutchWarmbloodTobanio12.png", alt: "Tobanio Dutch Warmblood" },
-					{ src: "12/GreyedDrafthorseBuckskin12.png", alt: "Buckskin Greyed Draft" },
-					{ src: "12/LeopardAppaloosa12.png", alt: "Leopard Appaloosa" },
-					{ src: "12/NezPerceAppaloosa12.png", alt: "Blanket Nez Perce" },
-					{ src: "12/PalominoQuarterhorse12.png", alt: "Palomino Quarterhorse" },
-					{ src: "12/RedBayTW12.png", alt: "Red Bay Tennessee Walking Horse" }
-				],
-				"1:32": [
-					{ src: "32/32Chestnutsockfacestandardwalking.png", alt: "Bay Trakehner" },
-					{ src: "32/32baysockstandardstanding.png", alt: "Gypsy Vanner" },
-					{ src: "32/32blackfacesocksdraftrearing.png", alt: "Irish Sporthorse" },
-					{ src: "32/32dunfacesocksnowflakestandardrearing.png", alt: "Dun Snowflake Appaloosa" },
-					{ src: "32/32greydapplestandardrunning.png", alt: "Dapple Grey Dutch Warmblood" },
-					{ src: "32/AppaloosaSportHorse32.png", alt: "Appaloosa Sporthorse" },
-					{ src: "32/BlackHanoverian32.png", alt: "Black Hanoverian" },
-					{ src: "32/BloodBayArabian32.png", alt: "Blood Bay Arabian" },
-					{ src: "32/BuckskinQuarterhorse32.png", alt: "Buckskin Quarterhorse" },
-					{ src: "32/ClevelandBay32.png", alt: "Cleveland Bay" },
-					{ src: "32/DappleGreyMorgan32.png", alt: "Dapple Grey Morgan" },
-					{ src: "32/DutchWarmbloodTobanio32.png", alt: "Tobanio Dutch Warmblood" },
-					{ src: "32/GreyedDrafthorseBuckskin32.png", alt: "Buckskin Greyed Draft" },
-					{ src: "32/LeopardAppaloosa32.png", alt: "Leopard Appaloosa" }
-				]
-			};
+          // Update gallery images
+          const updateGallery = (scale) => {
+              carousel.innerHTML = ""; // Clear existing images
 
-			// Update gallery images
-			const updateGallery = (scale) => {
-				carousel.innerHTML = ""; // Clear existing images
+              // Add new images
+              galleries[scale].forEach(image => {
+                  const img = document.createElement("img");
+                  img.src = image.src;
+                  img.alt = image.alt;
+                  img.style.height = "100%";
+                  img.style.objectFit = "contain";
+                  img.style.flexShrink = "0";
+                  carousel.appendChild(img);
+              });
 
-				// Add new images
-				galleries[scale].forEach(image => {
-					const img = document.createElement("img");
-					img.src = image.src;
-					img.alt = image.alt;
-					carousel.appendChild(img);
-				});
+              // Duplicate images for seamless scrolling
+              const duplicates = [...galleries[scale], ...galleries[scale]]; // Create continuous duplicate images
+              duplicates.forEach(image => {
+                  const img = document.createElement("img");
+                  img.src = image.src;
+                  img.alt = image.alt;
+                  img.style.height = "100%";
+                  img.style.objectFit = "contain";
+                  img.style.flexShrink = "0";
+                  carousel.appendChild(img);
+              });
 
-				// Duplicate images for seamless scrolling
-				const duplicates = [...galleries[scale], ...galleries[scale]]; // Create continuous duplicate images
-				duplicates.forEach(image => {
-					const img = document.createElement("img");
-					img.src = image.src;
-					img.alt = image.alt;
-					carousel.appendChild(img);
-				});
+              // Adjust track width for seamless scrolling
+              const totalImages = duplicates.length;
+              const scrollWidth = 250 * totalImages;
+              carousel.style.width = `${scrollWidth}px`;
 
-				// Adjust track width for seamless scrolling
-				const totalImages = duplicates.length;
-				const scrollWidth = 250 * totalImages;
-				carousel.style.width = `${scrollWidth}px`;
+              // Dynamically adjust keyframe animation based on the number of images
+              const animationTime = totalImages * 5; // 5s per image for smooth animation
+              const styleSheet = document.styleSheets[0];
+              const keyframes = `
+                  @keyframes scroll {
+                      0% { transform: translateX(0); }
+                      100% { transform: translateX(-${scrollWidth}px); }
+                  }
+              `;
 
-				// Dynamically adjust keyframe animation based on the number of images
-				const animationTime = totalImages * 5; // 5s per image for smooth animation
-				const styleSheet = document.styleSheets[0];
-				const keyframes = `
-					@keyframes scroll {
-						0% { transform: translateX(0); }
-						100% { transform: translateX(-${scrollWidth}px); }
-					}
-				`;
+              // Remove existing keyframes (if any) and insert new one
+              const existingIndex = Array.from(styleSheet.cssRules).findIndex(rule => rule.name === "scroll");
+              if (existingIndex > -1) {
+                  styleSheet.deleteRule(existingIndex);
+              }
+              styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
 
-				// Remove existing keyframes (if any) and insert new one
-				const existingIndex = Array.from(styleSheet.cssRules).findIndex(rule => rule.name === "scroll");
-				if (existingIndex > -1) {
-					styleSheet.deleteRule(existingIndex);
-				}
-				styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+              // Apply the animation
+              carousel.style.animation = `scroll ${animationTime}s linear infinite`;
+          };
 
-				// Apply the animation
-				carousel.style.animation = `scroll ${animationTime}s linear infinite`;
-			};
+          // Event listener for model type change
+          scaleSelect.addEventListener("change", (e) => {
+              updateGallery(e.target.value);
+          });
+
+          // Initialize gallery on page load
+          updateGallery(scaleSelect.value);
+      });
 
 
-			// Calculate and update total price and payment due
-			const updateTotalPrice = () => {
-				const basePrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
-				const isSmallScale = scaleSelect.value === "1:32";
 
-				// Helper function to calculate add-ons
-				const calculateAddOnPrice = (selectElement) => {
-					return Array.from(selectElement.selectedOptions).reduce((sum, option) => {
-						const addonPrice = parseInt(option.dataset.price) || 0;
-						return sum + (isSmallScale ? addonPrice / 2 : addonPrice);
-					}, 0);
-				};
+      // Calculate and update total price and payment due
+      const updateTotalPrice = () => {
+      	const basePrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
+      	const isSmallScale = scaleSelect.value === "1:32";
 
-				const buildPrice = parseInt(buildSelect.options[buildSelect.selectedIndex].dataset.price) || 0;
-				const posePrice = parseInt(poseSelect.options[poseSelect.selectedIndex].dataset.price) || 0;
+      	// Helper function to calculate add-ons
+      	const calculateAddOnPrice = (selectElement) => {
+      		return Array.from(selectElement.selectedOptions).reduce((sum, option) => {
+      			const addonPrice = parseInt(option.dataset.price) || 0;
+      			return sum + (isSmallScale ? addonPrice / 2 : addonPrice);
+      		}, 0);
+      	};
 
-				totalPrice = basePrice
-					+ calculateAddOnPrice(coatMarkingsSelect)
-					+ calculateAddOnPrice(accessoriesSelect)
-					+ (isSmallScale ? buildPrice / 2 : buildPrice)
-					+ (isSmallScale ? posePrice / 2 : posePrice);
+      	const buildPrice = parseInt(buildSelect.options[buildSelect.selectedIndex].dataset.price) || 0;
+      	const posePrice = parseInt(poseSelect.options[poseSelect.selectedIndex].dataset.price) || 0;
 
-				paymentDue = totalPrice / 2;
+      	totalPrice = basePrice
+      		+ calculateAddOnPrice(coatMarkingsSelect)
+      		+ calculateAddOnPrice(accessoriesSelect)
+      		+ (isSmallScale ? buildPrice / 2 : buildPrice)
+      		+ (isSmallScale ? posePrice / 2 : posePrice);
 
-				// Update UI
-				totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`;
-				paymentDueElement.textContent = `$${paymentDue.toFixed(2)}`;
-			};
+      	paymentDue = totalPrice / 2;
 
-			// Render PayPal button
-			const renderPayPalButton = () => {
-				paypal.Buttons({
-					createOrder: (data, actions) => {
-						return actions.order.create({
-							purchase_units: [{
-								amount: { value: paymentDue.toFixed(2) }
-							}]
-						});
-					},
-					onApprove: (data, actions) => {
-						return actions.order.capture().then((details) => {
-							alert(`Transaction completed by ${details.payer.name.given_name}`);
-							submitOrder(details);
-						});
-					}
-				}).render('#paypal-button-container');
-			};
+      	// Update UI
+      	totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`;
+      	paymentDueElement.textContent = `$${paymentDue.toFixed(2)}`;
+      };
 
-			// Submit order data to Formspree
-			const submitOrder = (details) => {
-				const formData = {
-					email: form.email.value,
-					phone: form.phone.value,
-					scale: form['model-type'].value,
-					coatColor: form['coat-color'].value,
-					coatMarkings: Array.from(form['coat-markings'].selectedOptions).map(option => option.value),
-					build: form['build'].value,
-					pose: form['pose'].value,
-					accessories: Array.from(form['accessories'].selectedOptions).map(option => option.value),
-					notes: form.notes.value,
-					transactionId: details.id,
-					totalPrice: totalPrice.toFixed(2),
-					paymentDue: paymentDue.toFixed(2),
-					payerName: details.payer.name.given_name,
-					payerEmail: details.payer.email_address,
-					paymentCompleted: details.purchase_units[0].payments.captures[0].amount.value
-				};
+      // Render PayPal button
+      const renderPayPalButton = () => {
+      	paypal.Buttons({
+      		createOrder: (data, actions) => {
+      			return actions.order.create({
+      				purchase_units: [{
+      					amount: { value: paymentDue.toFixed(2) }
+      				}]
+      			});
+      		},
+      		onApprove: (data, actions) => {
+      			return actions.order.capture().then((details) => {
+      				alert(`Transaction completed by ${details.payer.name.given_name}`);
+      				submitOrder(details);
+      			});
+      		}
+      	}).render('#paypal-button-container');
+      };
 
-				fetch("https://formspree.io/f/myzyapwz", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify(formData)
-				})
-					.then(response => {
-						if (!response.ok) {
-							throw new Error("Failed to submit the order. Please try again.");
-						}
-					})
-					.catch(error => {
-						console.error("Error submitting to Formspree:", error);
-						alert("An error occurred. Please try again.");
-					});
-			};
+      // Submit order data to Formspree
+      const submitOrder = (details) => {
+      	const formData = {
+      		email: form.email.value,
+      		phone: form.phone.value,
+      		scale: form['model-type'].value,
+      		coatColor: form['coat-color'].value,
+      		coatMarkings: Array.from(form['coat-markings'].selectedOptions).map(option => option.value),
+      		build: form['build'].value,
+      		pose: form['pose'].value,
+      		accessories: Array.from(form['accessories'].selectedOptions).map(option => option.value),
+      		notes: form.notes.value,
+      		transactionId: details.id,
+      		totalPrice: totalPrice.toFixed(2),
+      		paymentDue: paymentDue.toFixed(2),
+      		payerName: details.payer.name.given_name,
+      		payerEmail: details.payer.email_address,
+      		paymentCompleted: details.purchase_units[0].payments.captures[0].amount.value
+      	};
 
-			// Event listeners to update total price and gallery
-			scaleSelect.addEventListener("change", (e) => {
-				updateTotalPrice();
-				updateGallery(e.target.value);
-			});
+      	fetch("https://formspree.io/f/myzyapwz", {
+      		method: "POST",
+      		headers: {
+      			"Content-Type": "application/json"
+      		},
+      		body: JSON.stringify(formData)
+      	})
+      	.then(response => {
+      		if (!response.ok) {
+      			throw new Error("Failed to submit the order. Please try again.");
+      		}
+      	})
+      	.catch(error => {
+      		console.error("Error submitting to Formspree:", error);
+      		alert("An error occurred. Please try again.");
+      	});
+      };
 
-			const inputsToUpdate = [coatMarkingsSelect, buildSelect, poseSelect, accessoriesSelect];
-			inputsToUpdate.forEach(input => input.addEventListener("change", updateTotalPrice));
+      // Event listeners to update total price and gallery
+      scaleSelect.addEventListener("change", (e) => {
+      	updateTotalPrice();
+      	updateGallery(e.target.value);
+      });
 
-			// Initialize PayPal button, price, and gallery on load
-			renderPayPalButton();
-			updateTotalPrice();
-			updateGallery(scaleSelect.value);
-		});
+      const inputsToUpdate = [coatMarkingsSelect, buildSelect, poseSelect, accessoriesSelect];
+      inputsToUpdate.forEach(input => input.addEventListener("change", updateTotalPrice));
+
+      // Initialize PayPal button, price, and gallery on load
+      renderPayPalButton();
+      updateTotalPrice();
+      updateGallery(scaleSelect.value);
+      });
     </script>
-
-
-</body>
+  </body>
 </html>
