@@ -291,231 +291,223 @@
     </div>
 
     <!-- JavaScript -->
-    <script>
-      	// JavaScript
-      document.addEventListener("DOMContentLoaded", function () {
-        const scaleSelect = document.getElementById("model-type");
-        const coatMarkingsSelect = document.getElementById("coat-markings");
-        const buildSelect = document.getElementById("build");
-        const poseSelect = document.getElementById("pose");
-        const accessoriesSelect = document.getElementById("accessories");
-        const totalPriceElement = document.getElementById("total-price");
-        const paymentDueElement = document.getElementById("payment-due");
-        const form = document.getElementById("order-form");
-        const carousel = document.getElementById("carousel");
-    
-        let totalPrice = 0;
-        let paymentDue = 0;
-    
-        const galleries = {
-            "1:9": [
-                { src: "9/AppaloosaSportHorse9.png", alt: "Appaloosa Sporthorse" },
-                { src: "9/BloodBayArabian9.png", alt: "Blood Bay Arabian" },
-                { src: "9/BuckskinQuarterhorse9.png", alt: "Buckskin Quarterhorse" },
-                { src: "9/ClevelandBay9.png", alt: "Cleveland Bay" },
-                { src: "9/DappleGreyDraftHorse9.png", alt: "Dapple Grey Draft" },
-                { src: "9/DunWelshCob9.png", alt: "Dun Welsh Cob" },
-                { src: "9/DutchWarmbloodTobanio9.png", alt: "Dutch Warmblood Tobanio" },
-                { src: "9/GreyedDrafthorseBuckskin9.png", alt: "Buckskin Greyed Draft" },
-                { src: "9/LeopardAppaloosa9.png", alt: "Leopard Appaloosa" },
-                { src: "9/DappleGreyMorgan9.png", alt: "Dapple Grey Morgan" },
-                { src: "9/BayRussianHeavyDraft9.png", alt: "Bay Russian Heavy Draft" }
-            ],
-            "1:12": [
-                { src: "12/AppaloosaSportHorse12.png", alt: "Appaloosa Sport Horse" },
-                { src: "12/BlackHanoverian12.png", alt: "Black Hanoverian" },
-                { src: "12/BloodBayArabian12.png", alt: "Blood Bay Arabian" },
-                { src: "12/BuckskinQuarterhorse12.png", alt: "Buckskin Quarterhorse" },
-                { src: "12/ClevelandBay12.png", alt: "Cleveland Bay" },
-                { src: "12/DappleGreyMorgan12.png", alt: "Dapple Grey Morgan" },
-                { src: "12/DutchWarmbloodTobanio12.png", alt: "Tobanio Dutch Warmblood" },
-                { src: "12/GreyedDrafthorseBuckskin12.png", alt: "Buckskin Greyed Draft" },
-                { src: "12/LeopardAppaloosa12.png", alt: "Leopard Appaloosa" },
-                { src: "12/NezPerceAppaloosa12.png", alt: "Blanket Nez Perce" },
-                { src: "12/PalominoQuarterhorse12.png", alt: "Palomino Quarterhorse" },
-                { src: "12/RedBayTW12.png", alt: "Red Bay Tennessee Walking Horse" }
-            ],
-            "1:32": [
-                { src: "32/32Chestnutsockfacestandardwalking.png", alt: "Bay Trakehner" },
-                { src: "32/32baysockstandardstanding.png", alt: "Gypsy Vanner" },
-                { src: "32/32blackfacesocksdraftrearing.png", alt: "Irish Sporthorse" },
-                { src: "32/32dunfacesocksnowflakestandardrearing.png", alt: "Dun Snowflake Appaloosa" },
-                { src: "32/32greydapplestandardrunning.png", alt: "Dapple Grey Dutch Warmblood" },
-                { src: "32/AppaloosaSportHorse32.png", alt: "Appaloosa Sporthorse" },
-                { src: "32/BlackHanoverian32.png", alt: "Black Hanoverian" },
-                { src: "32/BloodBayArabian32.png", alt: "Blood Bay Arabian" },
-                { src: "32/BuckskinQuarterhorse32.png", alt: "Buckskin Quarterhorse" },
-                { src: "32/ClevelandBay32.png", alt: "Cleveland Bay" },
-                { src: "32/DappleGreyMorgan32.png", alt: "Dapple Grey Morgan" },
-                { src: "32/DutchWarmbloodTobanio32.png", alt: "Tobanio Dutch Warmblood" },
-                { src: "32/GreyedDrafthorseBuckskin32.png", alt: "Buckskin Greyed Draft" },
-                { src: "32/LeopardAppaloosa32.png", alt: "Leopard Appaloosa" }
-            ]
-        };
-    
-        // Update gallery images
-        const updateGallery = (scale) => {
-            carousel.innerHTML = ""; // Clear existing images
-    
-            // Add new images
-            galleries[scale].forEach(image => {
-                const img = document.createElement("img");
-                img.src = image.src;
-                img.alt = image.alt;
-                img.style.height = "100%";
-                img.style.objectFit = "contain";
-                img.style.flexShrink = "0";
-                carousel.appendChild(img);
-            });
-    
-            // Duplicate images for seamless scrolling
-            const duplicates = [...galleries[scale], ...galleries[scale]]; // Create continuous duplicate images
-            duplicates.forEach(image => {
-                const img = document.createElement("img");
-                img.src = image.src;
-                img.alt = image.alt;
-                img.style.height = "100%";
-                img.style.objectFit = "contain";
-                img.style.flexShrink = "0";
-                carousel.appendChild(img);
-            });
-    
-            // Adjust track width for seamless scrolling
-            const totalImages = duplicates.length;
-            const scrollWidth = 250 * totalImages;
-            carousel.style.width = `${scrollWidth}px`;
-    
-            // Dynamically adjust keyframe animation based on the number of images
-            const animationTime = totalImages * 5; // 5s per image for smooth animation
-            const styleSheet = document.styleSheets[0];
-            const keyframes = `
-                @keyframes scroll {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-${scrollWidth}px); }
-                }
-            `;
-    
-            // Remove existing keyframes (if any) and insert new one
-            const existingIndex = Array.from(styleSheet.cssRules).findIndex(rule => rule.name === "scroll");
-            if (existingIndex > -1) {
-                styleSheet.deleteRule(existingIndex);
-            }
-            styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
-    
-            // Apply the animation
-            carousel.style.animation = `scroll ${animationTime}s linear infinite`;
-        };
-    
-        // Event listener for model type change
-        scaleSelect.addEventListener("change", (e) => {
-            updateGallery(e.target.value);
+   <script>
+// JavaScript
+document.addEventListener("DOMContentLoaded", function () {
+    const scaleSelect = document.getElementById("model-type");
+    const coatMarkingsSelect = document.getElementById("coat-markings");
+    const buildSelect = document.getElementById("build");
+    const poseSelect = document.getElementById("pose");
+    const accessoriesSelect = document.getElementById("accessories");
+    const totalPriceElement = document.getElementById("total-price");
+    const paymentDueElement = document.getElementById("payment-due");
+    const form = document.getElementById("order-form");
+    const carousel = document.getElementById("carousel");
+
+    let totalPrice = 0;
+    let paymentDue = 0;
+
+    const galleries = {
+        "1:9": [
+            { src: "9/AppaloosaSportHorse9.png", alt: "Appaloosa Sporthorse" },
+            { src: "9/BloodBayArabian9.png", alt: "Blood Bay Arabian" },
+            { src: "9/BuckskinQuarterhorse9.png", alt: "Buckskin Quarterhorse" },
+            { src: "9/ClevelandBay9.png", alt: "Cleveland Bay" },
+            { src: "9/DappleGreyDraftHorse9.png", alt: "Dapple Grey Draft" },
+            { src: "9/DunWelshCob9.png", alt: "Dun Welsh Cob" },
+            { src: "9/DutchWarmbloodTobanio9.png", alt: "Dutch Warmblood Tobanio" },
+            { src: "9/GreyedDrafthorseBuckskin9.png", alt: "Buckskin Greyed Draft" },
+            { src: "9/LeopardAppaloosa9.png", alt: "Leopard Appaloosa" },
+            { src: "9/DappleGreyMorgan9.png", alt: "Dapple Grey Morgan" },
+            { src: "9/BayRussianHeavyDraft9.png", alt: "Bay Russian Heavy Draft" }
+        ],
+        "1:12": [
+            { src: "12/AppaloosaSportHorse12.png", alt: "Appaloosa Sport Horse" },
+            { src: "12/BlackHanoverian12.png", alt: "Black Hanoverian" },
+            { src: "12/BloodBayArabian12.png", alt: "Blood Bay Arabian" },
+            { src: "12/BuckskinQuarterhorse12.png", alt: "Buckskin Quarterhorse" },
+            { src: "12/ClevelandBay12.png", alt: "Cleveland Bay" },
+            { src: "12/DappleGreyMorgan12.png", alt: "Dapple Grey Morgan" },
+            { src: "12/DutchWarmbloodTobanio12.png", alt: "Tobanio Dutch Warmblood" },
+            { src: "12/GreyedDrafthorseBuckskin12.png", alt: "Buckskin Greyed Draft" },
+            { src: "12/LeopardAppaloosa12.png", alt: "Leopard Appaloosa" },
+            { src: "12/NezPerceAppaloosa12.png", alt: "Blanket Nez Perce" },
+            { src: "12/PalominoQuarterhorse12.png", alt: "Palomino Quarterhorse" },
+            { src: "12/RedBayTW12.png", alt: "Red Bay Tennessee Walking Horse" }
+        ],
+        "1:32": [
+            { src: "32/32Chestnutsockfacestandardwalking.png", alt: "Bay Trakehner" },
+            { src: "32/32baysockstandardstanding.png", alt: "Gypsy Vanner" },
+            { src: "32/32blackfacesocksdraftrearing.png", alt: "Irish Sporthorse" },
+            { src: "32/32dunfacesocksnowflakestandardrearing.png", alt: "Dun Snowflake Appaloosa" },
+            { src: "32/32greydapplestandardrunning.png", alt: "Dapple Grey Dutch Warmblood" },
+            { src: "32/AppaloosaSportHorse32.png", alt: "Appaloosa Sporthorse" },
+            { src: "32/BlackHanoverian32.png", alt: "Black Hanoverian" },
+            { src: "32/BloodBayArabian32.png", alt: "Blood Bay Arabian" },
+            { src: "32/BuckskinQuarterhorse32.png", alt: "Buckskin Quarterhorse" },
+            { src: "32/ClevelandBay32.png", alt: "Cleveland Bay" },
+            { src: "32/DappleGreyMorgan32.png", alt: "Dapple Grey Morgan" },
+            { src: "32/DutchWarmbloodTobanio32.png", alt: "Tobanio Dutch Warmblood" },
+            { src: "32/GreyedDrafthorseBuckskin32.png", alt: "Buckskin Greyed Draft" },
+            { src: "32/LeopardAppaloosa32.png", alt: "Leopard Appaloosa" }
+        ]
+    };
+
+    // Update gallery images
+    const updateGallery = (scale) => {
+        carousel.innerHTML = ""; // Clear existing images
+
+        // Add new images
+        galleries[scale].forEach(image => {
+            const img = document.createElement("img");
+            img.src = image.src;
+            img.alt = image.alt;
+            img.style.height = "100%";
+            img.style.objectFit = "contain";
+            img.style.flexShrink = "0";
+            carousel.appendChild(img);
         });
-    
-        // Initialize gallery on page load
-        updateGallery(scaleSelect.value);
-    }); // Missing closing brace and parenthesis added here
 
+        // Duplicate images for seamless scrolling
+        const duplicates = [...galleries[scale], ...galleries[scale]]; // Create continuous duplicate images
+        duplicates.forEach(image => {
+            const img = document.createElement("img");
+            img.src = image.src;
+            img.alt = image.alt;
+            img.style.height = "100%";
+            img.style.objectFit = "contain";
+            img.style.flexShrink = "0";
+            carousel.appendChild(img);
+        });
 
-            // Calculate and update total price and payment due
-      const updateTotalPrice = () => {
-      	const basePrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
-      	const isSmallScale = scaleSelect.value === "1:32";
+        // Adjust track width for seamless scrolling
+        const totalImages = duplicates.length;
+        const scrollWidth = 250 * totalImages;
+        carousel.style.width = `${scrollWidth}px`;
 
-      	// Helper function to calculate add-ons
-      	const calculateAddOnPrice = (selectElement) => {
-      		return Array.from(selectElement.selectedOptions).reduce((sum, option) => {
-      			const addonPrice = parseInt(option.dataset.price) || 0;
-      			return sum + (isSmallScale ? addonPrice / 2 : addonPrice);
-      		}, 0);
-      	};
+        // Dynamically adjust keyframe animation based on the number of images
+        const animationTime = totalImages * 5; // 5s per image for smooth animation
+        const styleSheet = document.styleSheets[0];
+        const keyframes = `
+            @keyframes scroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-${scrollWidth}px); }
+            }
+        `;
 
-      	const buildPrice = parseInt(buildSelect.options[buildSelect.selectedIndex].dataset.price) || 0;
-      	const posePrice = parseInt(poseSelect.options[poseSelect.selectedIndex].dataset.price) || 0;
+        // Remove existing keyframes (if any) and insert new one
+        const existingIndex = Array.from(styleSheet.cssRules).findIndex(rule => rule.name === "scroll");
+        if (existingIndex > -1) {
+            styleSheet.deleteRule(existingIndex);
+        }
+        styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
 
-      	totalPrice = basePrice
-      		+ calculateAddOnPrice(coatMarkingsSelect)
-      		+ calculateAddOnPrice(accessoriesSelect)
-      		+ (isSmallScale ? buildPrice / 2 : buildPrice)
-      		+ (isSmallScale ? posePrice / 2 : posePrice);
+        // Apply the animation
+        carousel.style.animation = `scroll ${animationTime}s linear infinite`;
+    };
 
-      	paymentDue = totalPrice / 2;
+    // Event listener for model type change
+    scaleSelect.addEventListener("change", (e) => {
+        updateTotalPrice();
+        updateGallery(e.target.value);
+    });
 
-      	// Update UI
-      	totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`;
-      	paymentDueElement.textContent = `$${paymentDue.toFixed(2)}`;
-      };
+    // Calculate and update total price and payment due
+    const updateTotalPrice = () => {
+        const basePrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
+        const isSmallScale = scaleSelect.value === "1:32";
 
-      // Render PayPal button
-      const renderPayPalButton = () => {
-      	paypal.Buttons({
-      		createOrder: (data, actions) => {
-      			return actions.order.create({
-      				purchase_units: [{
-      					amount: { value: paymentDue.toFixed(2) }
-      				}]
-      			});
-      		},
-      		onApprove: (data, actions) => {
-      			return actions.order.capture().then((details) => {
-      				alert(`Transaction completed by ${details.payer.name.given_name}`);
-      				submitOrder(details);
-      			});
-      		}
-      	}).render('#paypal-button-container');
-      };
+        // Helper function to calculate add-ons
+        const calculateAddOnPrice = (selectElement) => {
+            return Array.from(selectElement.selectedOptions).reduce((sum, option) => {
+                const addonPrice = parseInt(option.dataset.price) || 0;
+                return sum + (isSmallScale ? addonPrice / 2 : addonPrice);
+            }, 0);
+        };
 
-      // Submit order data to Formspree
-      const submitOrder = (details) => {
-      	const formData = {
-      		email: form.email.value,
-      		phone: form.phone.value,
-      		scale: form['model-type'].value,
-      		coatColor: form['coat-color'].value,
-      		coatMarkings: Array.from(form['coat-markings'].selectedOptions).map(option => option.value),
-      		build: form['build'].value,
-      		pose: form['pose'].value,
-      		accessories: Array.from(form['accessories'].selectedOptions).map(option => option.value),
-      		notes: form.notes.value,
-      		transactionId: details.id,
-      		totalPrice: totalPrice.toFixed(2),
-      		paymentDue: paymentDue.toFixed(2),
-      		payerName: details.payer.name.given_name,
-      		payerEmail: details.payer.email_address,
-      		paymentCompleted: details.purchase_units[0].payments.captures[0].amount.value
-      	};
+        const buildPrice = parseInt(buildSelect.options[buildSelect.selectedIndex].dataset.price) || 0;
+        const posePrice = parseInt(poseSelect.options[poseSelect.selectedIndex].dataset.price) || 0;
 
-      	fetch("https://formspree.io/f/myzyapwz", {
-      		method: "POST",
-      		headers: {
-      			"Content-Type": "application/json"
-      		},
-      		body: JSON.stringify(formData)
-      	})
-      	.then(response => {
-      		if (!response.ok) {
-      			throw new Error("Failed to submit the order. Please try again.");
-      		}
-      	})
-      	.catch(error => {
-      		console.error("Error submitting to Formspree:", error);
-      		alert("An error occurred. Please try again.");
-      	});
-      };
+        totalPrice = basePrice
+            + calculateAddOnPrice(coatMarkingsSelect)
+            + calculateAddOnPrice(accessoriesSelect)
+            + (isSmallScale ? buildPrice / 2 : buildPrice)
+            + (isSmallScale ? posePrice / 2 : posePrice);
 
-      // Event listeners to update total price and gallery
-      scaleSelect.addEventListener("change", (e) => {
-      	updateTotalPrice();
-      	updateGallery(e.target.value);
-      });
+        paymentDue = totalPrice / 2;
 
-      const inputsToUpdate = [coatMarkingsSelect, buildSelect, poseSelect, accessoriesSelect];
-      inputsToUpdate.forEach(input => input.addEventListener("change", updateTotalPrice));
+        // Update UI
+        totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`;
+        paymentDueElement.textContent = `$${paymentDue.toFixed(2)}`;
+    };
 
-      // Initialize PayPal button, price, and gallery on load
-      renderPayPalButton();
-      updateTotalPrice();
-      updateGallery(scaleSelect.value);
-      });
-    </script>
+    // Render PayPal button
+    const renderPayPalButton = () => {
+        paypal.Buttons({
+            createOrder: (data, actions) => {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: { value: paymentDue.toFixed(2) }
+                    }]
+                });
+            },
+            onApprove: (data, actions) => {
+                return actions.order.capture().then((details) => {
+                    alert(`Transaction completed by ${details.payer.name.given_name}`);
+                    submitOrder(details);
+                });
+            }
+        }).render('#paypal-button-container');
+    };
+
+    // Submit order data to Formspree
+    const submitOrder = (details) => {
+        const formData = {
+            email: form.email.value,
+            phone: form.phone.value,
+            scale: form['model-type'].value,
+            coatColor: form['coat-color'].value,
+            coatMarkings: Array.from(form['coat-markings'].selectedOptions).map(option => option.value),
+            build: form['build'].value,
+            pose: form['pose'].value,
+            accessories: Array.from(form['accessories'].selectedOptions).map(option => option.value),
+            notes: form.notes.value,
+            transactionId: details.id,
+            totalPrice: totalPrice.toFixed(2),
+            paymentDue: paymentDue.toFixed(2),
+            payerName: details.payer.name.given_name,
+            payerEmail: details.payer.email_address,
+            paymentCompleted: details.purchase_units[0].payments.captures[0].amount.value
+        };
+
+        fetch("https://formspree.io/f/myzyapwz", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to submit the order. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error submitting to Formspree:", error);
+            alert("An error occurred. Please try again.");
+        });
+    };
+
+    // Event listeners to update total price and gallery
+    const inputsToUpdate = [coatMarkingsSelect, buildSelect, poseSelect, accessoriesSelect];
+    inputsToUpdate.forEach(input => input.addEventListener("change", updateTotalPrice));
+
+    // Initialize PayPal button, price, and gallery on load
+    renderPayPalButton();
+    updateTotalPrice();
+    updateGallery(scaleSelect.value);
+}); // Fixed closing bracket added here
+</script>
+
   </body>
 </html>
