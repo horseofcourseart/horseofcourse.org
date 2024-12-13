@@ -370,11 +370,34 @@ document.addEventListener("DOMContentLoaded", function () {
         ]
     };
 
+  const calculateTotalPrice = () => {
+        const modelType = document.getElementById("model-type");
+        const coatMarkings = document.getElementById("coat-markings");
+        const build = document.getElementById("build");
+        const pose = document.getElementById("pose");
+        const finish = document.getElementById("finish");
+        const internationalShippingCheckbox = document.getElementById("international-shipping");
+
+        const basePrice = parseInt(modelType.options[modelType.selectedIndex]?.dataset.price) || 0;
+        const buildPrice = parseInt(build.options[build.selectedIndex]?.dataset.price) || 0;
+        const posePrice = parseInt(pose.options[pose.selectedIndex]?.dataset.price) || 0;
+        const finishPrice = parseInt(finish.options[finish.selectedIndex]?.dataset.price) || 0;
+
+        const coatMarkingsPrice = Array.from(coatMarkings.selectedOptions).reduce((sum, option) => {
+            return sum + (parseInt(option.dataset.price) || 0);
+        }, 0);
+
+        const shippingCost = internationalShippingCheckbox.checked ? INTERNATIONAL_SHIPPING_COST : US_CANADA_SHIPPING_COST;
+
+        totalPrice = basePrice + buildPrice + posePrice + finishPrice + coatMarkingsPrice + shippingCost;
+    };
+
     const showStep = (index) => {
         steps.forEach((step, i) => step.classList.toggle("active", i === index));
         if (index === steps.length - 1) {
+            calculateTotalPrice();
             updateSummary();
-            renderPayPalButton(); // Render the PayPal button on the final step
+            renderPayPalButton(); // Render PayPal button on the final step
         }
     };
 
@@ -388,6 +411,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         summaryDetails.textContent = `
             Model Type: ${modelType}, Coat Color: ${coatColor}, Markings: ${coatMarkings}, Build: ${build}, Pose: ${pose}, Finish: ${finish}
+            Total Price: $${totalPrice.toFixed(2)}
         `;
     };
 
@@ -451,7 +475,18 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     const renderPayPalButton = () => {
+        if (!paypalContainer) {
+            console.error("PayPal container not found.");
+            return;
+        }
+
         paypalContainer.innerHTML = ""; // Clear any existing buttons
+
+        if (totalPrice <= 0) {
+            alert("Total price must be greater than zero.");
+            return;
+        }
+
         paypal.Buttons({
             createOrder: (data, actions) => {
                 return actions.order.create({
@@ -494,9 +529,14 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(response => {
             if (!response.ok) throw new Error("Failed to submit the order.");
+            alert("Order submitted successfully.");
         })
         .catch(error => alert("Error submitting order. Please try again."));
     };
+
+    // Initialize form
+    showStep(0);
+});
 
     document.querySelectorAll(".next-step").forEach(btn => btn.addEventListener("click", () => showStep(++currentStep)));
     document.querySelectorAll(".prev-step").forEach(btn => btn.addEventListener("click", () => showStep(--currentStep)));
