@@ -192,146 +192,122 @@
       </section>
 
       <!-- Form Section -->
-      <section id="form-section">
+      <section id="interactive-form">
         <form id="order-form">
-          <!-- Email Field -->
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" required /><br /><br />
-
-          <!-- Phone Number Field -->
-          <label for="phone">Phone Number:</label>
-          <input type="tel" id="phone" name="phone" required /><br /><br />
-
-          <!-- Model Type -->
-          <label for="model-type">Model Type:</label>
-          <select id="model-type" name="model-type" required>
-            <option value="1:32" data-price="50">1:32 ($50)</option>
-            <option value="1:12" data-price="150">1:12 ($150)</option>
-            <option value="1:9" data-price="300">1:9 ($300)</option>
-          </select>
-
-          <!-- Coat Color -->
-          <label for="coat-color">Coat Color:</label>
-          <select id="coat-color" name="coat-color" required>
-            <option value="Bay" data-price="0">Bay</option>
-            <option value="Chestnut" data-price="0">Chestnut</option>
-            <option value="Seal" data-price="0">Seal</option>
-            <option value="Black" data-price="0">Black</option>
-            <option value="Grey" data-price="0">Grey</option>
-            <option value="White" data-price="0">White</option>
-            <option value="Cream" data-price="0">Cream</option>
-            <option value="Perlino" data-price="0">Perlino</option>
-            <option value="Palomino" data-price="0">Palomino</option>
-            <option value="Dun" data-price="0">Dun</option>
-            <option value="Buckskin" data-price="0">Buckskin</option>
-          </select>
-
-          <!-- Coat Markings -->
-          <label for="coat-markings">Coat Markings:</label>
-          <select id="coat-markings" name="coat-markings" multiple>
-            <option value="Socks" data-price="0">Socks (Free)</option>
-            <option value="Face" data-price="0">Face (Free)</option>
-            <option value="Pinto" data-price="20">
-              Pinto (+$20/+$10 for 1:32)
-            </option>
-            <option value="Robicano" data-price="20">
-              Robicano (+$20/+$10 for 1:32)
-            </option>
-            <option value="Roan" data-price="20">
-              Roan (+$20/+$10 for 1:32)
-            </option>
-            <option value="Blanket" data-price="20">
-              Blanket (+$20/+$10 for 1:32)
-            </option>
-            <option value="Leopard" data-price="20">
-              Leopard (+$20/+$10 for 1:32)
-            </option>
-            <option value="Snowflake" data-price="20">
-              Snowflake (+$20/+$10 for 1:32)
-            </option>
-            <option value="Dapple" data-price="20">
-              Dapple (+$20/+$10 for 1:32)
-            </option>
-            <option value="Sooty" data-price="20">
-              Smoky (+$20/+$10 for 1:32)
-            </option>
-          </select>
-
-          <!-- Build -->
-          <label for="build">Build:</label>
-          <select id="build" name="build" required>
-            <option value="Standard" data-price="0">Standard (Free)</option>
-            <option value="Pony" data-price="0">Pony (Free)</option>
-            <option value="Draft" data-price="40">
-              Draft (+$40/+$20 for 1:32)
-            </option>
-            <option value="Specific Breed" data-price="70">
-              Specific Breed (+$70/+$35 for 1:32)
-            </option>
-          </select>
-
-          <!-- Pose -->
-          <label for="pose">Pose:</label>
-          <select id="pose" name="pose" required>
-            <option value="Standing" data-price="0">Standing (Free)</option>
-            <option value="Walking" data-price="0">Walking (Free)</option>
-            <option value="Trotting" data-price="0">Trotting (Free)</option>
-            <option value="Cantering" data-price="0">Cantering (Free)</option>
-            <option value="Galloping" data-price="0">Galloping (Free)</option>
-            <option value="Rearing" data-price="30">Rearing (+$30/+$15 for 1:32)</option>
-          </select>
-
-          <!-- Finish -->
-          <label for="finish">Finish:</label>
-          <select id="finish" name="finish" required>
-            <option value="matte" data-price="0">Matte</option>
-            <option value="satin-matte" data-price="0">Satin Matte</option>
-            <option value="glossy" data-price="15">Glossy (+$15/+$7.50 for 1:32)</option>
-          </select>
-
-          <!-- Notes Field -->
-          <label for="notes">Notes:</label>
-          <textarea
-            id="notes"
-            name="notes"
-            rows="4"
-            cols="50"
-            placeholder="Enter any additional notes here"
-          ></textarea><br /><br />
-
-          <!-- Shipping Type -->
-          <label for="international-shipping">International Shipping:</label>
-          <input type="checkbox" id="international-shipping" name="international-shipping" />
+          <!-- Step 1: Email and Phone -->
+          <div class="form-step" id="step-1">
+            <h2>Contact Information</h2>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+            <br /><br />
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required />
+            <br /><br />
+            <button type="button" class="next-step">Next</button>
+          </div>
+      
+          <!-- Step 2: Model Type -->
+          <div class="form-step" id="step-2">
+            <h2>Select Model Type</h2>
+            <p>Choose the scale of the model. Larger scales provide more detail.</p>
+            <label for="model-type">Model Type:</label>
+            <select id="model-type" name="model-type" required>
+              <option value="1:32" data-price="50">1:32 ($50)</option>
+              <option value="1:12" data-price="150">1:12 ($150)</option>
+              <option value="1:9" data-price="300">1:9 ($300)</option>
+            </select>
+            <br /><br />
+            <button type="button" class="prev-step">Back</button>
+            <button type="button" class="next-step">Next</button>
+          </div>
+      
+          <!-- Step 3: Coat Color -->
+          <div class="form-step" id="step-3">
+            <h2>Select Coat Color</h2>
+            <p>Choose the desired coat color for your model horse.</p>
+            <label for="coat-color">Coat Color:</label>
+            <select id="coat-color" name="coat-color" required>
+              <option value="Bay" data-price="0">Bay</option>
+              <option value="Chestnut" data-price="0">Chestnut</option>
+              <option value="Seal" data-price="0">Seal</option>
+              <option value="Black" data-price="0">Black</option>
+              <option value="Grey" data-price="0">Grey</option>
+              <option value="White" data-price="0">White</option>
+              <option value="Cream" data-price="0">Cream</option>
+              <option value="Perlino" data-price="0">Perlino</option>
+              <option value="Palomino" data-price="0">Palomino</option>
+              <option value="Dun" data-price="0">Dun</option>
+              <option value="Buckskin" data-price="0">Buckskin</option>
+            </select>
+            <br /><br />
+            <button type="button" class="prev-step">Back</button>
+            <button type="button" class="next-step">Next</button>
+          </div>
+      
+          <!-- Step 4: Additional Options -->
+          <div class="form-step" id="step-4">
+            <h2>Customize Your Model</h2>
+            <label for="coat-markings">Coat Markings:</label>
+            <select id="coat-markings" name="coat-markings" multiple>
+              <option value="Socks" data-price="0">Socks (Free)</option>
+              <option value="Face" data-price="0">Face (Free)</option>
+              <option value="Pinto" data-price="20">Pinto (+$20/+$10 for 1:32)</option>
+              <option value="Roan" data-price="20">Roan (+$20/+$10 for 1:32)</option>
+            </select>
+            <br /><br />
+      
+            <label for="build">Build:</label>
+            <select id="build" name="build" required>
+              <option value="Standard" data-price="0">Standard (Free)</option>
+              <option value="Pony" data-price="0">Pony (Free)</option>
+              <option value="Draft" data-price="40">Draft (+$40/+$20 for 1:32)</option>
+            </select>
+            <br /><br />
+      
+            <label for="pose">Pose:</label>
+            <select id="pose" name="pose" required>
+              <option value="Standing" data-price="0">Standing (Free)</option>
+              <option value="Walking" data-price="0">Walking (Free)</option>
+            </select>
+            <br /><br />
+      
+            <label for="finish">Finish:</label>
+            <select id="finish" name="finish" required>
+              <option value="matte" data-price="0">Matte</option>
+              <option value="glossy" data-price="15">Glossy (+$15)</option>
+            </select>
+            <br /><br />
+      
+            <button type="button" class="prev-step">Back</button>
+            <button type="button" class="next-step">Next</button>
+          </div>
+      
+          <!-- Step 5: PayPal Checkout -->
+          <div class="form-step" id="step-5">
+            <h2>Complete Your Order</h2>
+            <div id="review-summary">
+              <p><strong>Review Your Order:</strong></p>
+              <p id="summary-details"></p>
+            </div>
+            <br />
+            <div id="paypal-button-container"></div>
+            <br />
+            <button type="button" class="prev-step">Back</button>
+            <button type="submit">Submit</button>
+          </div>
         </form>
       </section>
 
-      <!-- Footer Section -->
-      <footer>
-        <h3>Total Price: <span id="total-price">$300.00</span></h3>
-
-        <!-- PayPal Button -->
-        <div class="paypal-button-container">
-          <div id="paypal-button-container"></div>
-        </div>
-      </footer>
-    </div>
-
     <!-- JavaScript -->
   <script>
-// JavaScript
 document.addEventListener("DOMContentLoaded", function () {
-    const scaleSelect = document.getElementById("model-type");
-    const buildSelect = document.getElementById("build");
-    const poseSelect = document.getElementById("pose");
-    const coatColorSelect = document.getElementById('coat-color');
-    const coatMarkingsSelect = document.getElementById("coat-markings");
-    const finishSelect = document.getElementById('finish');
-    const totalPriceElement = document.getElementById("total-price");
-    const internationalShippingCheckbox = document.getElementById('international-shipping');
+    const steps = document.querySelectorAll(".form-step");
+    const summaryDetails = document.getElementById("summary-details");
     const form = document.getElementById("order-form");
     const carousel = document.getElementById("carousel");
     const loadingSpinner = document.getElementById("loading-spinner");
 
+    let currentStep = 0;
     let totalPrice = 0;
 
     const US_CANADA_SHIPPING_COST = 25;
@@ -382,184 +358,93 @@ document.addEventListener("DOMContentLoaded", function () {
         ]
     };
 
+    const showStep = (index) => {
+        steps.forEach((step, i) => step.classList.toggle("active", i === index));
+        if (index === steps.length - 1) updateSummary();
+    };
+
+    const updateSummary = () => {
+        const modelType = document.getElementById("model-type").value;
+        const coatColor = document.getElementById("coat-color").value;
+        const coatMarkings = Array.from(document.getElementById("coat-markings").selectedOptions).map(opt => opt.value).join(", ");
+        const build = document.getElementById("build").value;
+        const pose = document.getElementById("pose").value;
+        const finish = document.getElementById("finish").value;
+
+        summaryDetails.textContent = `
+            Model Type: ${modelType}, Coat Color: ${coatColor}, Markings: ${coatMarkings}, Build: ${build}, Pose: ${pose}, Finish: ${finish}
+        `;
+    };
+
     // Update gallery images
     const updateGallery = (scale) => {
-      const loadingSpinner = document.getElementById("loading-spinner");
-  
-      // Show the loading spinner
-      loadingSpinner.classList.add("show");
-  
-      carousel.innerHTML = ""; // Clear existing images
-  
-      // Add new images
-      galleries[scale].forEach(image => {
-          const img = document.createElement("img");
-          img.src = image.src;
-          img.alt = image.alt;
-          img.style.height = "100%";
-          img.style.objectFit = "contain";
-          img.style.flexShrink = "0";
-          carousel.appendChild(img);
-      });
-  
-      // Duplicate images for seamless scrolling
-      const duplicates = [...galleries[scale], ...galleries[scale]]; // Create continuous duplicate images
-      duplicates.forEach(image => {
-          const img = document.createElement("img");
-          img.src = image.src;
-          img.alt = image.alt;
-          img.style.height = "100%";
-          img.style.objectFit = "contain";
-          img.style.flexShrink = "0";
-          carousel.appendChild(img);
-      });
-  
-      // Adjust track width for seamless scrolling
-      const totalImages = duplicates.length;
-      const scrollWidth = 250 * totalImages;
-      carousel.style.width = `${scrollWidth}px`;
-  
-      // Dynamically adjust keyframe animation based on the number of images
-      const animationTime = totalImages * 5; // 5s per image for smooth animation
-      const styleSheet = document.styleSheets[0];
-      const keyframes = `
-          @keyframes scroll {
-              0% { transform: translateX(0); }
-              100% { transform: translateX(-${scrollWidth}px); }
-          }
-      `;
-  
-      // Remove existing keyframes (if any) and insert new one
-      const existingIndex = Array.from(styleSheet.cssRules).findIndex(rule => rule.name === "scroll");
-      if (existingIndex > -1) {
-          styleSheet.deleteRule(existingIndex);
-      }
-      styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
-  
-      // Apply the animation
-      carousel.style.animation = `scroll ${animationTime}s linear infinite`;
-  
-      // Hide loading spinner once images are loaded
-      const images = carousel.querySelectorAll("img");
-      let loadedImages = 0;
-  
-      images.forEach((img) => {
-          img.onload = () => {
-              loadedImages++;
-              if (loadedImages === images.length) {
-                  loadingSpinner.classList.remove("show"); // Hide the loading spinner when all images are loaded
-              }
-          };
-      });
-  };
+        loadingSpinner.classList.add("show");
+        carousel.innerHTML = ""; // Clear existing images
 
-  // Function to calculate shipping cost based on the checkbox
-    const calculateShippingCost = () => {
-        return internationalShippingCheckbox.checked ? INTERNATIONAL_SHIPPING_COST : US_CANADA_SHIPPING_COST;
-    };
+        galleries[scale].forEach(image => {
+            const img = document.createElement("img");
+            img.src = image.src;
+            img.alt = image.alt;
+            img.style.height = "100%";
+            img.style.objectFit = "contain";
+            img.style.flexShrink = "0";
+            carousel.appendChild(img);
+        });
 
-  // Helper function to calculate add-on prices
-    const calculateAddOnPrice = (selectElement) => {
-        const isSmallScale = scaleSelect.value === '1:32';
-        return Array.from(selectElement.selectedOptions).reduce((sum, option) => {
-            const addonPrice = parseInt(option.dataset.price) || 0;
-            // Apply 1:32 scale price adjustment if the scale is 1:32
-            return sum + (isSmallScale ? addonPrice / 2 : addonPrice);
-        }, 0);
-    };
-  
-    // Event listener for model type change
-    scaleSelect.addEventListener("change", (e) => {
-        updateTotalPrice();
-        updateGallery(e.target.value);
-    });
+        const duplicates = [...galleries[scale], ...galleries[scale]];
+        duplicates.forEach(image => {
+            const img = document.createElement("img");
+            img.src = image.src;
+            img.alt = image.alt;
+            img.style.height = "100%";
+            img.style.objectFit = "contain";
+            img.style.flexShrink = "0";
+            carousel.appendChild(img);
+        });
 
-    // Calculate and update total price
-    const updateTotalPrice = () => {
-        const basePrice = parseInt(scaleSelect.options[scaleSelect.selectedIndex].dataset.price) || 0;
-        const isSmallScale = scaleSelect.value === '1:32';
+        const totalImages = duplicates.length;
+        const scrollWidth = 250 * totalImages;
+        carousel.style.width = `${scrollWidth}px`;
 
-        const buildPrice = parseInt(buildSelect.options[buildSelect.selectedIndex].dataset.price) || 0;
-        const posePrice = parseInt(poseSelect.options[poseSelect.selectedIndex].dataset.price) || 0;
-        const finishPrice = parseInt(finishSelect.options[finishSelect.selectedIndex].dataset.price) || 0;
-
-        // Calculate total price from base model, add-ons, build, and pose
-        totalPrice = basePrice
-            + calculateAddOnPrice(coatMarkingsSelect)
-            + (isSmallScale ? buildPrice / 2 : buildPrice)
-            + (isSmallScale ? posePrice / 2 : posePrice)
-            + finishPrice;
-
-        // Add shipping cost
-        totalPrice += calculateShippingCost();
-
-        // Update UI with the new total price
-        totalPriceElement.textContent = `$${totalPrice.toFixed(2)}`;
-    };
-
-    // Render PayPal button with updated total price
-    const renderPayPalButton = () => {
-        paypal.Buttons({
-            createOrder: (data, actions) => {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: { value: totalPrice.toFixed(2) }
-                    }]
-                });
-            },
-            onApprove: (data, actions) => {
-                return actions.order.capture().then((details) => {
-                    alert(`Transaction completed by ${details.payer.name.given_name}`);
-                    submitOrder(details);
-                });
+        const animationTime = totalImages * 5;
+        const styleSheet = document.styleSheets[0];
+        const keyframes = `
+            @keyframes scroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-${scrollWidth}px); }
             }
-        }).render('#paypal-button-container');
-    };
+        `;
 
-    // Submit order data to Formspree
-    const submitOrder = (details) => {
-        const formData = {
-            email: form.email.value,
-            phone: form.phone.value,
-            scale: form['model-type'].value,
-            coatColor: form['coat-color'].value,
-            coatMarkings: Array.from(form['coat-markings'].selectedOptions).map(option => option.value),
-            build: form['build'].value,
-            pose: form['pose'].value,
-            finish: form['finish'].value,
-            notes: form.notes.value,
-            transactionId: details.id,
-            totalPrice: totalPrice.toFixed(2),
-            payerName: details.payer.name.given_name,
-            payerEmail: details.payer.email_address,
-            paymentCompleted: details.purchase_units[0].payments.captures[0].amount.value
-        };
+        const existingIndex = Array.from(styleSheet.cssRules).findIndex(rule => rule.name === "scroll");
+        if (existingIndex > -1) {
+            styleSheet.deleteRule(existingIndex);
+        }
+        styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
 
-        fetch("https://formspree.io/f/myzyapwz", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Failed to submit the order. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Error submitting to Formspree:", error);
-            alert("An error occurred. Please try again.");
+        carousel.style.animation = `scroll ${animationTime}s linear infinite`;
+
+        const images = carousel.querySelectorAll("img");
+        let loadedImages = 0;
+
+        images.forEach((img) => {
+            img.onload = () => {
+                loadedImages++;
+                if (loadedImages === images.length) {
+                    loadingSpinner.classList.remove("show");
+                }
+            };
         });
     };
 
-    // Event listeners to update total price and gallery
-    const inputsToUpdate = [scaleSelect, coatColorSelect, coatMarkingsSelect, buildSelect, poseSelect, finishSelect, internationalShippingCheckbox];
-    inputsToUpdate.forEach(input => input.addEventListener("change", updateTotalPrice));
+    document.querySelectorAll(".next-step").forEach(btn => btn.addEventListener("click", () => showStep(++currentStep)));
+    document.querySelectorAll(".prev-step").forEach(btn => btn.addEventListener("click", () => showStep(--currentStep)));
 
-    // Initialize PayPal button, price, and gallery on load
-    renderPayPalButton();
-    updateTotalPrice();
+    document.getElementById("model-type").addEventListener("change", (e) => {
+        updateGallery(e.target.value);
+    });
+
+    updateGallery(document.getElementById("model-type").value);
+    showStep(currentStep);
 });
 </script>
 
