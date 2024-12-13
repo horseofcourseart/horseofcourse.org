@@ -324,91 +324,90 @@
     </div>
 
     <!-- JavaScript -->
-   <script>
-    // JavaScript
+  <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const scaleSelect = document.getElementById("model-type");
-        const carousel = document.getElementById("carousel");
-        const loadingSpinner = document.getElementById("loading-spinner");
+      const scaleSelect = document.getElementById("model-type");
+      const carousel = document.getElementById("carousel");
+      const loadingSpinner = document.getElementById("loading-spinner");
     
-        // Function to update gallery with the selected scale
-        const updateGallery = (scale) => {
-            loadingSpinner.style.display = "flex"; // Show loading spinner
+      // Function to update gallery with the selected scale
+      const updateGallery = (scale) => {
+          loadingSpinner.style.display = "flex"; // Show loading spinner
     
-            carousel.innerHTML = ""; // Clear existing images
+          carousel.innerHTML = ""; // Clear existing images
     
-            // Add new images based on the selected scale
-            galleries[scale].forEach(image => {
-                const img = document.createElement("img");
-                img.src = image.src;
-                img.alt = image.alt;
-                img.style.height = "100%";
-                img.style.objectFit = "contain";
-                img.style.flexShrink = "0";
+          // Add new images based on the selected scale
+          galleries[scale].forEach(image => {
+              const img = document.createElement("img");
+              img.src = image.src;
+              img.alt = image.alt;
+              img.style.height = "100%";
+              img.style.objectFit = "contain";
+              img.style.flexShrink = "0";
     
-                // Hide the spinner when the image is loaded
-                img.onload = () => {
-                    if (carousel.querySelectorAll("img").length === galleries[scale].length * 2) {
-                        loadingSpinner.style.display = "none"; // Hide the spinner
-                    }
-                };
+              // Hide the spinner when the image is loaded
+              img.onload = () => {
+                  if (carousel.querySelectorAll("img").length === galleries[scale].length * 2) {
+                      loadingSpinner.style.display = "none"; // Hide the spinner
+                  }
+              };
     
-                carousel.appendChild(img);
-            });
+              carousel.appendChild(img);
+          });
     
-            // Duplicate images for seamless scrolling
-            const duplicates = [...galleries[scale], ...galleries[scale]];
-            duplicates.forEach(image => {
-                const img = document.createElement("img");
-                img.src = image.src;
-                img.alt = image.alt;
-                img.style.height = "100%";
-                img.style.objectFit = "contain";
-                img.style.flexShrink = "0";
+          // Duplicate images for seamless scrolling
+          const duplicates = [...galleries[scale], ...galleries[scale]];
+          duplicates.forEach(image => {
+              const img = document.createElement("img");
+              img.src = image.src;
+              img.alt = image.alt;
+              img.style.height = "100%";
+              img.style.objectFit = "contain";
+              img.style.flexShrink = "0";
     
-                img.onload = () => {
-                    if (carousel.querySelectorAll("img").length === duplicates.length * 2) {
-                        loadingSpinner.style.display = "none"; // Hide the spinner
-                    }
-                };
+              img.onload = () => {
+                  if (carousel.querySelectorAll("img").length === duplicates.length * 2) {
+                      loadingSpinner.style.display = "none"; // Hide the spinner
+                  }
+              };
     
-                carousel.appendChild(img);
-            });
+              carousel.appendChild(img);
+          });
     
-            // Adjust track width for seamless scrolling
-            const totalImages = duplicates.length;
-            const scrollWidth = 250 * totalImages;
-            carousel.style.width = `${scrollWidth}px`;
+          // Adjust track width for seamless scrolling
+          const totalImages = duplicates.length;
+          const scrollWidth = 250 * totalImages;
+          carousel.style.width = `${scrollWidth}px`;
     
-            // Dynamically adjust keyframe animation based on the number of images
-            const animationTime = totalImages * 15; // Slower scrolling speed (adjust as needed)
-            const styleSheet = document.styleSheets[0];
-            const keyframes = `
-                @keyframes scroll {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-${scrollWidth}px); }
-                }
-            `;
+          // Dynamically adjust keyframe animation based on the number of images
+          const animationTime = totalImages * 15; // Slower scrolling speed (adjust as needed)
+          const styleSheet = document.styleSheets[0];
+          const keyframes = `
+              @keyframes scroll {
+                  0% { transform: translateX(0); }
+                  100% { transform: translateX(-${scrollWidth}px); }
+              }
+          `;
     
-            // Remove existing keyframes (if any) and insert new one
-            const existingIndex = Array.from(styleSheet.cssRules).findIndex(rule => rule.name === "scroll");
-            if (existingIndex > -1) {
-                styleSheet.deleteRule(existingIndex);
-            }
-            styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+          // Remove existing keyframes (if any) and insert new one
+          const existingIndex = Array.from(styleSheet.cssRules).findIndex(rule => rule.name === "scroll");
+          if (existingIndex > -1) {
+              styleSheet.deleteRule(existingIndex);
+          }
+          styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
     
-            // Apply the animation to the carousel
-            carousel.style.animation = `scroll ${animationTime}s linear infinite`;
-        };
+          // Apply the animation to the carousel
+          carousel.style.animation = `scroll ${animationTime}s linear infinite`;
+      };
     
-        // Event listener for model type change
-        scaleSelect.addEventListener("change", (e) => {
-            updateGallery(e.target.value);
-        });
+      // Event listener for model type change
+      scaleSelect.addEventListener("change", (e) => {
+          updateGallery(e.target.value);
+      });
     
-        // Initialize the gallery on page load
-        updateGallery(scaleSelect.value);
-    });
+      // Initialize the gallery on page load
+      updateGallery(scaleSelect.value);
+    }); // <-- This is the closing bracket for the DOMContentLoaded event listener function.
 
     // Calculate and update total price and payment due
     const updateTotalPrice = () => {
@@ -504,7 +503,6 @@
     renderPayPalButton();
     updateTotalPrice();
     updateGallery(scaleSelect.value);
-}); // Fixed closing bracket added here
 </script>
 
   </body>
